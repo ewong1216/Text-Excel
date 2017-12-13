@@ -23,9 +23,13 @@ public class Spreadsheet implements Grid
 		else if(c.contains("=")){
 			if(c.contains("\""))
 				setTextCell(new SpreadsheetLocation(c.substring(0,c.indexOf(" "))),c.substring(c.indexOf("\"")+1, c.length()-1));
+			//Room for other cell types
 		}
 		else if(!c.contains(" ") && !c.isEmpty()){
-			return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
+			if(getCell(new SpreadsheetLocation(c)).fullCellText().isEmpty())
+				return "";
+			else
+				return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
 		}
 		else if(c.isEmpty())
 			return "";
