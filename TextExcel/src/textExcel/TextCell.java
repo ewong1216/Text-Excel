@@ -14,6 +14,7 @@ public class TextCell implements Cell{
 			abbText = fillSpaces(fullText);
 		}
 	}
+	
 	public static String fillSpaces(String input){
 		if(input.length() < 10){
 			for(int i = input.length(); i < 10; i++){
