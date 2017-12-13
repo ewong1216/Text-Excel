@@ -16,14 +16,14 @@ public class Spreadsheet implements Grid
 			return c;
 		else if(c.isEmpty())
 			return "";
+		else if(c.equalsIgnoreCase("clear"))
+			clearGrid();
 		else if(!c.contains(" ") && !c.isEmpty()){
 			if(getCell(new SpreadsheetLocation(c)).fullCellText().isEmpty())
 				return "";
 			else
 				return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
 		}
-		else if(c.equalsIgnoreCase("clear"))
-			clearGrid();
 		else if(c.substring(0,c.indexOf(" ")).equalsIgnoreCase("clear"))
 			clearCell(new SpreadsheetLocation(c.substring(c.indexOf(" ")+1)));
 		else if(c.contains("=")){
