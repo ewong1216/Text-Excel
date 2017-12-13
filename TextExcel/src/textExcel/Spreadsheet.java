@@ -4,38 +4,45 @@ package textExcel;
 
 public class Spreadsheet implements Grid
 {
-	Cell[][] cells;
+	private Cell[][] cells;
 	public Spreadsheet(){
 		cells = new Cell[20][12];
+		clearGrid();
+		System.out.println(getGridText());
+	}
+
+	public String processCommand(String c){
+		if(c.equalsIgnoreCase("quit"))
+			return c;
+		if(c.contains("clear"))
+			if(!c.contains(" "))
+				clearGrid();
+			else
+				clearCell(new SpreadsheetLocation(c.substring(c.indexOf(" ")+1)));
+		if(c.contains("="))
+			if(c.contains("\""))
+				setTextCell(new SpreadsheetLocation(c.substring(0,c.indexOf(" "))),c.substring(c.indexOf("\"")+1, c.length()-1));
+		if(!c.contains(" "))
+			return getCell(new SpreadsheetLocation(c)).fullCellText();
+		return getGridText();
+	}
+	
+	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
 			for(int col = 0; col < 12; col++){
 				cells[row][col] = new EmptyCell();
 			}
 		}
-		printGrid();
 	}
 	
-	private void printGrid(){
-		System.out.println("   |A         |B         |C         |D         |E         |F         |G         |H         |I         |J         |K         |L         |");
-		for(int row = 0; row < 20; row++){
-			if(row < 9){
-				System.out.print(row + 1 + "  ");
-			}
-			else{
-				System.out.print(row + 1 + " ");
-			}
-			for(int col = 0; col < 12; col++){
-				System.out.print("|" + cells[row][col].abbreviatedCellText());
-			}
-			System.out.println("|");
-		}
+	private void clearCell(SpreadsheetLocation sl){
+		cells[sl.getRow()][sl.getCol()] = new EmptyCell();
 	}
 	
-	public String processCommand(String command){
-		
-		return command;
+	private void setTextCell(SpreadsheetLocation sl,String s){
+		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
-
+	
 	public int getRows(){
 		return 20;
 	}
@@ -44,30 +51,30 @@ public class Spreadsheet implements Grid
 		return 12;
 	}
 
-	@Override
 	public Cell getCell(Location loc){
-		// TODO Auto-generated method stub
-		return null;
+		return cells[loc.getRow()][loc.getCol()];
 	}
 
-	@Override
 	public String getGridText(){
-		// TODO Auto-generated method stub
-		return null;
+		String s = "   |A         |B         |C         |D         |E         |F         |G         |H         |I         |J         |K         |L         |";
+		for(int row = 0; row < 20; row++){
+			s += "\n";
+			if(row < 9)
+				s += row + 1 + "  ";
+			else
+				s += row + 1 + " ";
+			for(int col = 0; col < 12; col++){
+				s += "|" + cells[row][col].abbreviatedCellText();
+			}
+			s += "|";
+		}
+		return s;
 	}
 	
-	// You are free to use this helper method.  It takes a column letter (starting at "A")
-	// and returns the column number corresponding to that letter (0 for "A", 1 for "B", etc.)  
-	// WARNING!!  If the parameter is not a single, capital letter in the range of your Spreadsheet,
-	// bad things might happen!
 	public static int getColumnNumberFromColumnLetter(String columnLetter){
 		return Character.toUpperCase(columnLetter.charAt(0)) - 'A';
 	}
 
-	// You are free to use this helper method.  It takes a column number (starting at 0)
-	// and returns the column letter corresponding to that number ("A" for 0, "B" for 1, etc.)
-	// WARNING!!  If the parameter is not a number in the range of your Spreadsheet,
-	// bad things might happen!
 	public static String getColumnLetterFromColumnNumber(int columnNumber){
 		return "" + (char) ('A' + columnNumber);
 	}

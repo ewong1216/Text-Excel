@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class TextExcel
 {
-
+	
 	public static void main(String[] args)
 	{
 	    Scanner scan = new Scanner(System.in);
@@ -18,5 +18,7 @@ public class TextExcel
 	    	input = scan.nextLine();
 	    	System.out.println(s.processCommand(input));
 	    }
+	    scan.close();
 	}
+
 }
