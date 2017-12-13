@@ -25,6 +25,8 @@ public class Spreadsheet implements Grid
 			//Room for Setting Other Types
 		if(!c.contains(" ") && !c.isEmpty())
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
+		if(c.isEmpty())
+			return "";
 		return getGridText();
 	}
 	
