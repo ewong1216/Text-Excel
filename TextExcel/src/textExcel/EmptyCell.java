@@ -7,9 +7,7 @@ public class EmptyCell implements Cell
 		return "          ";
 	}
 
-	@Override
 	public String fullCellText(){
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}	
 }

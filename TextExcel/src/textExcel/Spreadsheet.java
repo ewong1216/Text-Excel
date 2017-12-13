@@ -71,6 +71,7 @@ public class Spreadsheet implements Grid
 			}
 			s += "|";
 		}
+		s += "\n";
 		return s;
 	}
 	
