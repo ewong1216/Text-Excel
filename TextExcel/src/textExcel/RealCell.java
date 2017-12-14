@@ -1,18 +1,16 @@
 package textExcel;
 
-public class TextCell implements Cell{
-	
+public class RealCell implements Cell{
+
 	private String fullText;
 	private String abbText;
 	
-	public TextCell(String cellText){
-		fullText = cellText;
-		if(fullText.length() >= 10){
-			abbText = fullText.substring(0, 10);
-		}
-		else{
+	public RealCell(String input){
+		fullText = input;
+		if(fullText.length() <= 10)
+			abbText = fullText;
+		else
 			abbText = Spreadsheet.fillSpaces(fullText);
-		}
 	}
 	
 	public String abbreviatedCellText(){
@@ -22,5 +20,4 @@ public class TextCell implements Cell{
 	public String fullCellText(){
 		return fullText;
 	}
-
 }

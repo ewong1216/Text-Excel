@@ -1,38 +1,37 @@
 package textExcel;
 
-// Update this file with your own code.
-
-public class Spreadsheet implements Grid
-{
+public class Spreadsheet implements Grid{
 	private Cell[][] cells;
 	public Spreadsheet(){
 		cells = new Cell[20][12];
 		clearGrid();
 		System.out.println(getGridText());
 	}
-
 	public String processCommand(String c){
-		if(c.equalsIgnoreCase("quit"))
+		if(c.equalsIgnoreCase("quit") || c.equals(""))
 			return c;
-		else if(c.isEmpty())
-			return "";
-		else if(c.equalsIgnoreCase("clear"))
+		if(c.equalsIgnoreCase("clear")){
 			clearGrid();
-		else if(!c.contains(" ") && !c.isEmpty()){
+			return getGridText();
+		}
+		String[] com = c.split(" ",3);
+		if(com[0].equalsIgnoreCase("clear"))
+			clearCell(new SpreadsheetLocation(com[1]));
+		else if(com.length == 1){ //Inspection
 			if(getCell(new SpreadsheetLocation(c)).getClass() == new EmptyCell().getClass())
 				return "";
-			else
+			else if(getCell(new SpreadsheetLocation(c)).getClass() == new TextCell("").getClass())
 				return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
+			//Room for other cell types.
 		}
-		else if(c.substring(0,c.indexOf(" ")).equalsIgnoreCase("clear"))
-			clearCell(new SpreadsheetLocation(c.substring(c.indexOf(" ")+1)));
-		else if(c.contains("=")){
-			if(c.contains("\""))
-				setTextCell(new SpreadsheetLocation(c.substring(0,c.indexOf(" "))),c.substring(c.indexOf("\"")+1, c.length()-1));
-			//Room for other cell types
+		else{ //For setting cells
+			if(com[2].contains("\""))
+				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
+			//Room for other cell types.
 		}
 		return getGridText();
 	}
+
 	
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
@@ -79,6 +78,14 @@ public class Spreadsheet implements Grid
 		return s;
 	}
 	
+	public static String fillSpaces(String input){
+		if(input.length() < 10){
+			for(int i = input.length(); i < 10; i++){
+				input += " ";
+			}
+		}
+		return input;
+	}
 	public static int getColumnNumberFromColumnLetter(String columnLetter){
 		return Character.toUpperCase(columnLetter.charAt(0)) - 'A';
 	}
