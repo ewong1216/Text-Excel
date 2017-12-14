@@ -21,7 +21,7 @@ public class PercentCell extends RealCell{
 	
 	public String fullCellText(){
 		if(inputText.indexOf(".") <= 2){
-			return "." +inputText.substring(0,inputText.indexOf(".")) + inputText.substring(inputText.indexOf(".")+1,inputText.length()-1);
+			return "0." +inputText.substring(0,inputText.indexOf(".")) + inputText.substring(inputText.indexOf(".")+1,inputText.length()-1);
 		}
 		return "lol";
 	}
