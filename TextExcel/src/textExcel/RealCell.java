@@ -7,7 +7,7 @@ public class RealCell implements Cell{
 	
 	public RealCell(String input){
 		fullText = input;
-		if(!input.contains(".") && !input.contains("("))
+		if(!input.contains(".") && !input.contains("(") && !input.contains("%"))
 			fullText += ".0";
 		if(fullText.length() >= 10)
 			abbText = fullText.substring(0, 10);
