@@ -18,14 +18,10 @@ public class Spreadsheet implements Grid{
 		String[] com = c.split(" ",3);
 		if(com[0].equalsIgnoreCase("clear"))
 			clearCell(new SpreadsheetLocation(com[1]));
-		else if(com.length == 1){ //Inspection
-			if(getCell(new SpreadsheetLocation(c)).getClass() == new EmptyCell().getClass())
-				return "";
-			else if(getCell(new SpreadsheetLocation(c)).getClass() == new TextCell("").getClass())
-				return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
-			//Room for other cell types.
+		else if(com.length == 1){ 
+			return getCell(new SpreadsheetLocation(c)).fullCellText();
 		}
-		else{ //For setting cells
+		else{
 			if(com[2].contains("\""))
 				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
 			else if(com[2].contains("%"))
