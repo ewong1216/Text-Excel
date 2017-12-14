@@ -7,12 +7,10 @@ public class TextCell implements Cell{
 	
 	public TextCell(String cellText){
 		fullText = cellText;
-		if(fullText.length() >= 10){
+		if(fullText.length() >= 10)
 			abbText = fullText.substring(0, 10);
-		}
-		else{
+		else
 			abbText = Spreadsheet.fillSpaces(fullText);
-		}
 	}
 	
 	public String abbreviatedCellText(){
@@ -20,7 +18,7 @@ public class TextCell implements Cell{
 	}
 
 	public String fullCellText(){
-		return fullText;
+		return "\"" + fullText + "\"";
 	}
 
 }

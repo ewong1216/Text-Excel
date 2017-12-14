@@ -7,12 +7,14 @@ public class RealCell implements Cell{
 	
 	public RealCell(String input){
 		fullText = input;
-		if(fullText.length() <= 10)
-			abbText = fullText;
+		if(fullText.length() >= 10)
+			abbText = fullText.substring(0, 10);
 		else
 			abbText = Spreadsheet.fillSpaces(fullText);
 	}
-	
+	public double getDoubleValue(){
+		return 0.0;
+	}
 	public String abbreviatedCellText(){
 		return abbText;
 	}

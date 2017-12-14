@@ -7,6 +7,7 @@ public class Spreadsheet implements Grid{
 		clearGrid();
 		System.out.println(getGridText());
 	}
+	
 	public String processCommand(String c){
 		if(c.equalsIgnoreCase("quit") || c.equals(""))
 			return c;
@@ -27,11 +28,15 @@ public class Spreadsheet implements Grid{
 		else{ //For setting cells
 			if(com[2].contains("\""))
 				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
-			//Room for other cell types.
+			else if(com[2].contains("%"))
+				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
+			else if(com[2].contains("("))
+				setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
+			else
+				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
 		}
 		return getGridText();
 	}
-
 	
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
@@ -48,7 +53,15 @@ public class Spreadsheet implements Grid{
 	private void setTextCell(SpreadsheetLocation sl,String s){
 		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
-	
+	private void setPercentCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new PercentCell(s);
+	}
+	private void setValueCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new ValueCell(s);
+	}
+	private void setFormulaCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
+	}
 	public int getRows(){
 		return 20;
 	}

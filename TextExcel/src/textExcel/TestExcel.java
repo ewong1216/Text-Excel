@@ -12,24 +12,27 @@ public class TestExcel {
 	}
 	
 	public String processCommand(String c){
-		if(c.equalsIgnoreCase("quit"))
+		if(c.equalsIgnoreCase("quit") || c.equals(""))
 			return c;
-		else if(c.isEmpty())
-			return "";
-		else if(c.equalsIgnoreCase("clear"))
+		if(c.equalsIgnoreCase("clear")){
 			clearGrid();
-		else if(!c.contains(" ") && !c.isEmpty()){
-			if(getCell(new SpreadsheetLocation(c)).getClass() == new EmptyCell().getClass())
-				return "";
-			else
-				return "\"" + getCell(new SpreadsheetLocation(c)).fullCellText() + "\"";
+			return getGridText();
 		}
-		else if(c.substring(0,c.indexOf(" ")).equalsIgnoreCase("clear"))
-			clearCell(new SpreadsheetLocation(c.substring(c.indexOf(" ")+1)));
-		else if(c.contains("=")){
-			if(c.contains("\""))
-				setTextCell(new SpreadsheetLocation(c.substring(0,c.indexOf(" "))),c.substring(c.indexOf("\"")+1, c.length()-1));
-			//Room for other cell types
+		String[] com = c.split(" ",3);
+		if(com[0].equalsIgnoreCase("clear"))
+			clearCell(new SpreadsheetLocation(com[1]));
+		else if(com.length == 1){ 
+			return getCell(new SpreadsheetLocation(c)).fullCellText();
+		}
+		else{ //For setting cells
+			if(com[2].contains("\""))
+				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
+			else if(com[2].contains("%"))
+				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
+			else if(com[2].contains("("))
+				setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
+			else
+				setValueCell(new SpreadsheetLocation(com[0]),com[2]);		
 		}
 		return getGridText();
 	}
@@ -37,7 +40,15 @@ public class TestExcel {
 	private void setTextCell(SpreadsheetLocation sl,String s){
 		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
-	
+	private void setPercentCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new PercentCell(s);
+	}
+	private void setValueCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new ValueCell(s);
+	}
+	private void setFormulaCell(SpreadsheetLocation sl, String s){
+		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
+	}
 	private void clearCell(SpreadsheetLocation sl){
 		cells[sl.getRow()][sl.getCol()] = new EmptyCell();
 	}

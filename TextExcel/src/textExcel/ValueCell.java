@@ -9,7 +9,7 @@ public class ValueCell extends RealCell{
 		value = Double.parseDouble(input);
 	}
 	
-	public double getValue(){
+	public double getDoubleValue(){
 		return value;
 	}
 }
