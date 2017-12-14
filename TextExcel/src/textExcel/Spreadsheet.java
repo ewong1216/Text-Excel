@@ -45,7 +45,6 @@ public class Spreadsheet implements Grid{
 	private void clearCell(SpreadsheetLocation sl){
 		cells[sl.getRow()][sl.getCol()] = new EmptyCell();
 	}
-	
 	private void setTextCell(SpreadsheetLocation sl,String s){
 		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
