@@ -45,8 +45,7 @@ public class Spreadsheet implements Grid{
 			return "";
 		}
 		if(com[1].equals("display")){
-			displayHistory(history);
-			return "";
+			return displayHistory(history);
 		}
 		return getGridText();
 	}
@@ -86,12 +85,14 @@ public class Spreadsheet implements Grid{
 		history[0] = command;
 		numComs++;
 	}
-	private void displayHistory(String[] history){
+	private String displayHistory(String[] history){
+		String display = "";
 		if(numComs >= history.length)
 			numComs = history.length;
 		for(int i = 0; i < numComs; i++){
-			System.out.println(history[i]);
+			display += history[i] + "\n";
 		}
+		return display;
 	}
 	public int getRows(){
 		return 20;
