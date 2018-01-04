@@ -95,9 +95,9 @@ public class Spreadsheet implements Grid{
 		}
 		if(cellRow > 20 || cellRow < 1)
 			return "ERROR: Invalid command.\n";
-		else if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
+		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
-		else if(coms[2].contains(" ") && !coms[2].contains("(") && !coms[2].contains("\""))
+		if(coms.length == 3 && coms[2].contains(" ") && !coms[2].contains("(") && !coms[2].contains("\""))
 			return "ERROR: Invalid command.\n";
 		return "";
 	}
