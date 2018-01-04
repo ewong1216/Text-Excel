@@ -66,8 +66,18 @@ public class Spreadsheet implements Grid{
 	}
 	private String checkForErrors(String c){
 		if(!c.contains(" ")){
-			if(!c.equalsIgnoreCase("clear") && c.length() > 3)
+			if(c.length() > 3 && !c.equalsIgnoreCase("clear")){
 				return "ERROR: Invalid command.\n";
+			}
+			else{
+				for(int row = 0; row < 20; row++){
+					for(int col = 0; col < 12; col++){
+						String cellName = getColumnLetterFromColumnNumber(col) + (row+1);
+						if(cellName.equalsIgnoreCase(c))
+							return"";
+					}
+				}
+			}
 		}
 		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
 			return "ERROR: Invalid command.\n";
