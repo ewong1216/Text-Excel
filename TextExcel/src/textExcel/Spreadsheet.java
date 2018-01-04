@@ -70,6 +70,8 @@ public class Spreadsheet implements Grid{
 				return "ERROR: Invalid command.\n";
 		}
 		String[] coms = c.split(" ", 3);
+		if(coms[0].equals("history"))
+			return"";
 		if(coms.length == 2 && !coms[0].equalsIgnoreCase("clear"))
 			return "ERROR: Invalid command.\n";
 		int cellRow;
