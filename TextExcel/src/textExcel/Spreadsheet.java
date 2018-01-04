@@ -27,7 +27,7 @@ public class Spreadsheet implements Grid{
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
 		}
 		else{
-			if(Integer.parseInt(com[0].substring(1)) > 19){
+			if(Integer.parseInt(com[0].substring(1)) - 1 > 19){
 				System.out.println("ERROR: Invalid command.");
 				return "";
 			}
