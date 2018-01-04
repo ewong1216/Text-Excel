@@ -95,12 +95,13 @@ public class Spreadsheet implements Grid{
 		}
 		if(cellRow > 20 || cellRow < 1)
 			return "ERROR: Invalid command.\n";
-		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
+		else if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
-		if(coms[2].contains(" ") && !coms[2].contains("(") && !coms[2].contains("\""))
+		else if(coms[2].contains(" ") && !coms[2].contains("(") && !coms[2].contains("\""))
 			return "ERROR: Invalid command.\n";
 		return "";
 	}
+	
 	
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
@@ -173,6 +174,7 @@ public class Spreadsheet implements Grid{
 		recordHistory = false;
 		numComs = 0;
 	}
+	
 	public int getRows(){
 		return 20;
 	}
