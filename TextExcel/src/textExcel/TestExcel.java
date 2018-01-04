@@ -35,6 +35,7 @@ public class TestExcel {
 		}
 		return getGridText();
 	}
+	/*
 	public String processCommand(String c) throws NumberFormatException{
 		try{
 			if(c.equalsIgnoreCase("quit") || c.equals(""))
@@ -66,7 +67,7 @@ public class TestExcel {
 		}
 		return getGridText();
 	}
-	
+	*/
 	private void setTextCell(SpreadsheetLocation sl,String s){
 		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
