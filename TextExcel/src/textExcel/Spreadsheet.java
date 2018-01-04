@@ -24,6 +24,9 @@ public class Spreadsheet implements Grid{
 			clearGrid();
 			return getGridText();
 		}
+		String error = checkForErrors(c);
+		if(!error.isEmpty())
+			return error;
 		String[] com = c.split(" ",3);
 		if(com[0].equalsIgnoreCase("clear"))
 			clearCell(new SpreadsheetLocation(com[1]));
@@ -60,6 +63,21 @@ public class Spreadsheet implements Grid{
 			}
 		}
 		return getGridText();
+	}
+	private String checkForErrors(String c){
+		if(c.indexOf(" ") == -1){
+			if(!c.equalsIgnoreCase("clear") && c.length() > 3)
+				return "ERROR: Invalid command.\n";
+		}
+		String[] coms = c.split(" ", 3);
+		if(coms.length == 2 && !coms[0].equalsIgnoreCase("clear"))
+			return "ERROR: Invalid command.\n";
+		int cellRow = Integer.parseInt(coms[0].substring(1));
+		if(cellRow > 20 || cellRow < 1)
+			return "ERROR: Invalid command.\n";
+		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
+			return "ERROR: Invalid command.\n";
+		return "";
 	}
 	
 	private void clearGrid(){
@@ -113,7 +131,6 @@ public class Spreadsheet implements Grid{
 			numComs = 0;
 			return;
 		}
-		
 		boolean clearFromEnd = false;
 		if(numComs >= history.length){
 			numComs = history.length;

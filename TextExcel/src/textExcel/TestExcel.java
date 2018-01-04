@@ -1,57 +1,22 @@
 package textExcel;
 
-import java.util.Scanner;
+import java.util.Arrays;
 
-public class TestExcel {
+public class TestExcel implements Grid{
 	private Cell[][] cells;
+	private String[] history;
+	private boolean recordHistory;
+	private int numComs;
+	private int numClear;
 	
 	public TestExcel(){
 		cells = new Cell[20][12];
 		clearGrid();
 		System.out.println(getGridText());
+		history = null;
+		recordHistory = false;
 	}
-	//Error Handling processCommand
-	/*
-	public String processCommand(String c){
-		if(c.equalsIgnoreCase("quit") || c.equals(""))
-			return c;
-		if(c.equalsIgnoreCase("clear")){
-			clearGrid();
-			return getGridText();
-		}
-		String[] com = c.split(" ",3);
-		if(com[0].equalsIgnoreCase("clear")){
-			if(Integer.parseInt(com[1].substring(1)) > 19){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
-			clearCell(new SpreadsheetLocation(com[1]));
-		}
-		else if(com.length == 1){
-			return getCell(new SpreadsheetLocation(c)).fullCellText();
-		}
-		else{
-			if(Integer.parseInt(com[0].substring(1)) - 1 > 19 || Integer.parseInt(com[0].substring(1)) < 1){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
-			if(getColumnNumberFromColumnLetter(com[0].substring(0, 1)) + 1 > 12){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
-			SpreadsheetLocation sl = new SpreadsheetLocation(com[0]); 
-			if(com[2].contains("\""))
-				setTextCell(sl,com[2].substring(com[2].indexOf("\"")+1, com[2].indexOf("\"",com[2].indexOf("\"")+1)));
-			else if(com[2].contains("%"))
-				setPercentCell(sl,com[2]);
-			else if(com[2].contains("("))
-				setFormulaCell(sl,com[2]);
-			else
-				setValueCell(sl,com[2]);
-		}
-		return getGridText();
-	}
-	*/
+	
 	public String processCommand(String c){
 		if(c.equalsIgnoreCase("quit") || c.equals(""))
 			return c;
@@ -65,7 +30,7 @@ public class TestExcel {
 		else if(com.length == 1){
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
 		}
-		else{
+		else if(com[1].equals("=")){
 			if(com[2].contains("\""))
 				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
 			else if(com[2].contains("%"))
@@ -75,9 +40,39 @@ public class TestExcel {
 			else
 				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
 		}
+		if(com[1].equals("start")){
+			startHistory(com[2]);
+			return "";
+		}
+		if(recordHistory){
+			if(!com[0].equals("history"))
+				record(c);
+			else if(com[1].equals("display")){
+				return displayHistory();
+			}
+			else if(com[1].equals("stop")){
+				stopHistory();
+				return "";
+			}
+			else{
+				clearHistory(com[2]);
+				return "";
+			}
+		}
 		return getGridText();
 	}
-
+	
+	private void clearGrid(){
+		for(int row = 0; row < 20; row++){
+			for(int col = 0; col < 12; col++){
+				cells[row][col] = new EmptyCell();
+			}
+		}
+	}
+	
+	private void clearCell(SpreadsheetLocation sl){
+		cells[sl.getRow()][sl.getCol()] = new EmptyCell();
+	}
 	private void setTextCell(SpreadsheetLocation sl,String s){
 		cells[sl.getRow()][sl.getCol()] = new TextCell(s);
 	}
@@ -90,21 +85,66 @@ public class TestExcel {
 	private void setFormulaCell(SpreadsheetLocation sl, String s){
 		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
 	}
-	private void clearCell(SpreadsheetLocation sl){
-		cells[sl.getRow()][sl.getCol()] = new EmptyCell();
-	}
 	
+	private void startHistory(String num){
+		history = new String[Integer.parseInt(num)];
+		recordHistory = true;
+	}
+	private void record(String command){
+		for(int i = history.length - 1; i > 0; i--){
+			history[i] = history[i-1];
+		}
+		history[0] = command;
+		numComs++;
+	}
+	private String displayHistory(){
+		String display = "";
+		if(numComs > history.length)
+			numComs = history.length;
+		for(int i = 0; i < numComs; i++){
+			display += history[i] + "\n";
+		}
+		return display;
+	}
+	private void clearHistory(String nClear){
+		numClear = Integer.parseInt(nClear);
+		if(numClear >= history.length || numClear > numComs){
+			Arrays.fill(history, "");
+			numComs = 0;
+			return;
+		}
+		boolean clearFromEnd = false;
+		if(numComs >= history.length){
+			numComs = history.length;
+			clearFromEnd = true;
+		}
+		for(int i = 0; i < numClear; i++){
+			if(clearFromEnd){
+				history[history.length-1-i] = "";
+			}
+			else{
+				history[numComs-i] = "";
+			}
+			numComs--;
+		}
+	}
+	private void stopHistory(){
+		history = null;
+		recordHistory = false;
+		numComs = 0;
+	}
+	public int getRows(){
+		return 20;
+	}
+
+	public int getCols(){
+		return 12;
+	}
+
 	public Cell getCell(Location loc){
 		return cells[loc.getRow()][loc.getCol()];
 	}
-	private void clearGrid(){
-		for(int row = 0; row < 20; row++){
-			for(int col = 0; col < 12; col++){
-				cells[row][col] = new EmptyCell();
-			}
-		}
-	}
-	
+
 	public String getGridText(){
 		String s = "   |A         |B         |C         |D         |E         |F         |G         |H         |I         |J         |K         |L         |";
 		for(int row = 0; row < 20; row++){
@@ -121,6 +161,23 @@ public class TestExcel {
 		s += "\n";
 		return s;
 	}
+	
+	public static String fillSpaces(String input){
+		if(input.length() < 10){
+			for(int i = input.length(); i < 10; i++){
+				input += " ";
+			}
+		}
+		return input;
+	}
+	public static int getColumnNumberFromColumnLetter(String columnLetter){
+		return Character.toUpperCase(columnLetter.charAt(0)) - 'A';
+	}
+
+	public static String getColumnLetterFromColumnNumber(int columnNumber){
+		return "" + (char) ('A' + columnNumber);
+	}
+
 	public static void main(String[] args){
 		/*
 		Scanner scan = new Scanner(System.in);
