@@ -2,10 +2,17 @@ package textExcel;
 
 public class Spreadsheet implements Grid{
 	private Cell[][] cells;
+	private String[] history;
+	private boolean recordHistory;
+	private int numComs;
+	private int numClear;
+	
 	public Spreadsheet(){
 		cells = new Cell[20][12];
 		clearGrid();
 		System.out.println(getGridText());
+		history = null;
+		recordHistory = false;
 	}
 	
 	public String processCommand(String c){
@@ -16,34 +23,30 @@ public class Spreadsheet implements Grid{
 			return getGridText();
 		}
 		String[] com = c.split(" ",3);
-		if(com[0].equalsIgnoreCase("clear")){
-			if(Integer.parseInt(com[1].substring(1)) > 19){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
+		if(com[0].equalsIgnoreCase("clear"))
 			clearCell(new SpreadsheetLocation(com[1]));
-		}
-		else if(com.length == 1){ 
+		else if(com.length == 1){
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
 		}
-		else{
-			if(Integer.parseInt(com[0].substring(1)) - 1 > 19 || Integer.parseInt(com[0].substring(1)) < 1){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
-			if(getColumnNumberFromColumnLetter(com[0].substring(0, 1)) + 1 > 12){
-				System.out.println("ERROR: Invalid command.");
-				return "";
-			}
-			SpreadsheetLocation sl = new SpreadsheetLocation(com[0]); 
+		else if(com[1].equals("=")){
 			if(com[2].contains("\""))
-				setTextCell(sl,com[2].substring(com[2].indexOf("\"")+1, com[2].indexOf("\"",com[2].indexOf("\"")+1)));
+				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
 			else if(com[2].contains("%"))
-				setPercentCell(sl,com[2]);
+				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
 			else if(com[2].contains("("))
-				setFormulaCell(sl,com[2]);
+				setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
 			else
-				setValueCell(sl,com[2]);
+				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
+		}
+		if(recordHistory && !com[0].equals("history"))
+			record(c);
+		if(com[1].equals("start")){
+			startHistory(com[2]);
+			return "";
+		}
+		if(com[1].equals("display")){
+			displayHistory(history);
+			return "";
 		}
 		return getGridText();
 	}
@@ -70,6 +73,25 @@ public class Spreadsheet implements Grid{
 	}
 	private void setFormulaCell(SpreadsheetLocation sl, String s){
 		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
+	}
+	
+	private void startHistory(String num){
+		history = new String[Integer.parseInt(num)];
+		recordHistory = true;
+	}
+	private void record(String command){
+		for(int i = history.length - 1; i > 0; i--){
+			history[i] = history[i-1];
+		}
+		history[0] = command;
+		numComs++;
+	}
+	private void displayHistory(String[] history){
+		if(numComs >= history.length)
+			numComs = history.length;
+		for(int i = 0; i < numComs; i++){
+			System.out.println(history[i]);
+		}
 	}
 	public int getRows(){
 		return 20;

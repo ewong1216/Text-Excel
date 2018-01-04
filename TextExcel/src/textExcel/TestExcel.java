@@ -10,6 +10,48 @@ public class TestExcel {
 		clearGrid();
 		System.out.println(getGridText());
 	}
+	//Error Handling processCommand
+	/*
+	public String processCommand(String c){
+		if(c.equalsIgnoreCase("quit") || c.equals(""))
+			return c;
+		if(c.equalsIgnoreCase("clear")){
+			clearGrid();
+			return getGridText();
+		}
+		String[] com = c.split(" ",3);
+		if(com[0].equalsIgnoreCase("clear")){
+			if(Integer.parseInt(com[1].substring(1)) > 19){
+				System.out.println("ERROR: Invalid command.");
+				return "";
+			}
+			clearCell(new SpreadsheetLocation(com[1]));
+		}
+		else if(com.length == 1){
+			return getCell(new SpreadsheetLocation(c)).fullCellText();
+		}
+		else{
+			if(Integer.parseInt(com[0].substring(1)) - 1 > 19 || Integer.parseInt(com[0].substring(1)) < 1){
+				System.out.println("ERROR: Invalid command.");
+				return "";
+			}
+			if(getColumnNumberFromColumnLetter(com[0].substring(0, 1)) + 1 > 12){
+				System.out.println("ERROR: Invalid command.");
+				return "";
+			}
+			SpreadsheetLocation sl = new SpreadsheetLocation(com[0]); 
+			if(com[2].contains("\""))
+				setTextCell(sl,com[2].substring(com[2].indexOf("\"")+1, com[2].indexOf("\"",com[2].indexOf("\"")+1)));
+			else if(com[2].contains("%"))
+				setPercentCell(sl,com[2]);
+			else if(com[2].contains("("))
+				setFormulaCell(sl,com[2]);
+			else
+				setValueCell(sl,com[2]);
+		}
+		return getGridText();
+	}
+	*/
 	public String processCommand(String c){
 		if(c.equalsIgnoreCase("quit") || c.equals(""))
 			return c;
@@ -80,6 +122,7 @@ public class TestExcel {
 		return s;
 	}
 	public static void main(String[] args){
+		/*
 		Scanner scan = new Scanner(System.in);
 	    String input = "";
 	    TestExcel t = new TestExcel();
@@ -89,5 +132,8 @@ public class TestExcel {
 	    	System.out.println(t.processCommand(input));
 	    }
 	    scan.close();
+	    */
+		String[] s = new String[5];
+		System.out.println(s[0]);
 	}
 }
