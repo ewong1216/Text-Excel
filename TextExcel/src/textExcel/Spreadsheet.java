@@ -69,6 +69,8 @@ public class Spreadsheet implements Grid{
 			if(!c.equalsIgnoreCase("clear") && c.length() > 3)
 				return "ERROR: Invalid command.\n";
 		}
+		if(c.contains("  "))
+			return "ERROR: Invalid command.\n";
 		String[] coms = c.split(" ", 3);
 		if(coms[0].equals("history"))
 			return"";
@@ -85,6 +87,7 @@ public class Spreadsheet implements Grid{
 			return "ERROR: Invalid command.\n";
 		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
+		
 		return "";
 	}
 	
