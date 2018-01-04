@@ -1,5 +1,7 @@
 package textExcel;
 
+import java.util.Arrays;
+
 public class Spreadsheet implements Grid{
 	private Cell[][] cells;
 	private String[] history;
@@ -106,6 +108,11 @@ public class Spreadsheet implements Grid{
 	}
 	private void clearHistory(String nClear){
 		numClear = Integer.parseInt(nClear);
+		if(numClear >= history.length){
+			Arrays.fill(history, "");
+			numComs = 0;
+			return;
+		}
 		boolean clearFromEnd = false;
 		if(numComs >= history.length){
 			numComs = history.length;
