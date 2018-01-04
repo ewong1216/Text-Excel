@@ -132,6 +132,7 @@ public class Spreadsheet implements Grid{
 	private void stopHistory(){
 		history = null;
 		recordHistory = false;
+		numComs = 0;
 	}
 	public int getRows(){
 		return 20;
