@@ -38,14 +38,24 @@ public class Spreadsheet implements Grid{
 			else
 				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
 		}
-		if(recordHistory && !com[0].equals("history"))
-			record(c);
 		if(com[1].equals("start")){
 			startHistory(com[2]);
 			return "";
 		}
-		if(com[1].equals("display")){
-			return displayHistory(history);
+		if(recordHistory){
+			if(!com[0].equals("history"))
+				record(c);
+			else if(com[1].equals("display")){
+				return displayHistory();
+			}
+			else if(com[1].equals("stop")){
+				stopHistory();
+				return "";
+			}
+			else{
+				clearHistory(com[2]);
+				return "";
+			}
 		}
 		return getGridText();
 	}
@@ -85,14 +95,26 @@ public class Spreadsheet implements Grid{
 		history[0] = command;
 		numComs++;
 	}
-	private String displayHistory(String[] history){
+	private String displayHistory(){
 		String display = "";
-		if(numComs >= history.length)
+		if(numComs > history.length)
 			numComs = history.length;
 		for(int i = 0; i < numComs; i++){
 			display += history[i] + "\n";
 		}
 		return display;
+	}
+	private void clearHistory(String nClear){
+		numClear = Integer.parseInt(nClear);
+		numComs = history.length;
+		for(int i = 0; i < numClear; i++){
+			history[history.length-1-i] = "";
+			numComs--;
+		}
+	}
+	private void stopHistory(){
+		history = null;
+		recordHistory = false;
 	}
 	public int getRows(){
 		return 20;
