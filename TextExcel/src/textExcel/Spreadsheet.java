@@ -31,6 +31,10 @@ public class Spreadsheet implements Grid{
 				System.out.println("ERROR: Invalid command.");
 				return "";
 			}
+			if(getColumnNumberFromColumnLetter(com[0].substring(0, 1)) + 1 > 12){
+				System.out.println("ERROR: Invalid command.");
+				return "";
+			}
 			SpreadsheetLocation sl = new SpreadsheetLocation(com[0]); 
 			if(com[2].contains("\""))
 				setTextCell(sl,com[2].substring(com[2].indexOf("\"")+1, com[2].indexOf("\"",com[2].indexOf("\"")+1)));
