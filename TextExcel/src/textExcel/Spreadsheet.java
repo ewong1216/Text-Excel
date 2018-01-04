@@ -7,32 +7,38 @@ public class Spreadsheet implements Grid{
 		clearGrid();
 		System.out.println(getGridText());
 	}
-	
-	public String processCommand(String c){
-		if(c.equalsIgnoreCase("quit") || c.equals(""))
-			return c;
-		if(c.equalsIgnoreCase("clear")){
-			clearGrid();
-			return getGridText();
+	public String processCommand(String c) throws NumberFormatException{
+		try{
+			if(c.equalsIgnoreCase("quit") || c.equals(""))
+				return c;
+			if(c.equalsIgnoreCase("clear")){
+				clearGrid();
+				return getGridText();
+			}
+			String[] com = c.split(" ",3);
+			if(com[0].equalsIgnoreCase("clear"))
+				clearCell(new SpreadsheetLocation(com[1]));
+			else if(com.length == 1){ 
+				return getCell(new SpreadsheetLocation(c)).fullCellText();
+			}
+			else{ //For setting cells
+				if(com[2].contains("\""))
+					setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(com[2].indexOf("\"") + 1, com[2].indexOf("\"",com[2].indexOf("\"") + 1)));
+				else if(com[2].contains("%"))
+					setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
+				else if(com[2].contains("("))
+					setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
+				else
+					setValueCell(new SpreadsheetLocation(com[0]),com[2]);		
+			}
 		}
-		String[] com = c.split(" ",3);
-		if(com[0].equalsIgnoreCase("clear"))
-			clearCell(new SpreadsheetLocation(com[1]));
-		else if(com.length == 1){ 
-			return getCell(new SpreadsheetLocation(c)).fullCellText();
-		}
-		else{
-			if(com[2].contains("\""))
-				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
-			else if(com[2].contains("%"))
-				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
-			else if(com[2].contains("("))
-				setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
-			else
-				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
+		catch(NumberFormatException e){
+			System.out.println("ERROR: Invalid command");
+			return "";
 		}
 		return getGridText();
 	}
+	
 	
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
