@@ -106,9 +106,18 @@ public class Spreadsheet implements Grid{
 	}
 	private void clearHistory(String nClear){
 		numClear = Integer.parseInt(nClear);
-		numComs = history.length;
+		boolean clearFromEnd = false;
+		if(numComs >= history.length){
+			numComs = history.length;
+			clearFromEnd = true;
+		}
 		for(int i = 0; i < numClear; i++){
-			history[history.length-1-i] = "";
+			if(clearFromEnd){
+				history[history.length-1-i] = "";
+			}
+			else{
+				history[numComs-i] = "";
+			}
 			numComs--;
 		}
 	}
