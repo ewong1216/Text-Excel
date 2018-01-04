@@ -65,11 +65,11 @@ public class Spreadsheet implements Grid{
 		return getGridText();
 	}
 	private String checkForErrors(String c){
-		if(c.indexOf(" ") == -1){
+		if(!c.contains(" ")){
 			if(!c.equalsIgnoreCase("clear") && c.length() > 3)
 				return "ERROR: Invalid command.\n";
 		}
-		if(c.contains("  "))
+		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
 			return "ERROR: Invalid command.\n";
 		String[] coms = c.split(" ", 3);
 		if(coms[0].equals("history"))
@@ -87,7 +87,8 @@ public class Spreadsheet implements Grid{
 			return "ERROR: Invalid command.\n";
 		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
-		
+		if(coms[2].contains(" ") && !coms[2].contains("("))
+			return "ERROR: Invalid command.\n";
 		return "";
 	}
 	
