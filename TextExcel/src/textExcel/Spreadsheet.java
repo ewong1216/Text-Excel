@@ -118,6 +118,8 @@ public class Spreadsheet implements Grid{
 			}
 			if(coms[2].endsWith("%"))
 				return "";
+			if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1)
+				return "ERROR: Invalid command.\n";
 			for(int i = 0; i < 26; i++){
 				if(getColumnLetterFromColumnNumber(i+1).equals(coms[2].substring(0, 1)))
 					return "ERROR: Invalid command.\n";
