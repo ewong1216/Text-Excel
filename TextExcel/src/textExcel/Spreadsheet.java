@@ -97,6 +97,8 @@ public class Spreadsheet implements Grid{
 		}
 		if(cellRow > 20 || cellRow < 1)
 			return "ERROR: Invalid command.\n";
+		else if(coms[0].equalsIgnoreCase("clear"))
+			return "";
 		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
 		if(coms[2].contains("\"")){
@@ -111,8 +113,6 @@ public class Spreadsheet implements Grid{
 					return "ERROR: Invalid command.\n";
 				}
 			}
-			if(coms[2].equals("M80"))
-				return "ERROR: Invalid command.\n";
 		}
 		return "";
 	}
