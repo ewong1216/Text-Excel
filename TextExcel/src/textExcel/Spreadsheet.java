@@ -64,6 +64,7 @@ public class Spreadsheet implements Grid{
 		}
 		return getGridText();
 	}
+	
 	private String checkForErrors(String c){
 		if(!c.contains(" ")){
 			if(c.length() > 3 && !c.equalsIgnoreCase("clear")){
@@ -77,6 +78,7 @@ public class Spreadsheet implements Grid{
 							return"";
 					}
 				}
+				return "ERROR: Invalid command.\n";
 			}
 		}
 		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
@@ -97,11 +99,23 @@ public class Spreadsheet implements Grid{
 			return "ERROR: Invalid command.\n";
 		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
 			return "ERROR: Invalid command.\n";
-		if(coms.length == 3 && coms[2].contains(" ") && !coms[2].contains("(") && !coms[2].contains("\""))
-			return "ERROR: Invalid command.\n";
+		if(coms[2].contains("\"")){
+			if(!coms[2].startsWith("\"") || !coms[2].endsWith("\""))
+				return "ERROR: Invalid command.\n";
+			else
+				return "";
+		}
+		if(coms.length == 3){
+			if(coms[2].contains("+") || coms[2].contains("-") || coms[2].contains("*") || coms[2].contains("/")){
+				if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
+					return "ERROR: Invalid command.\n";
+				}
+			}
+			if(coms[2].equals("M80"))
+				return "ERROR: Invalid command.\n";
+		}
 		return "";
 	}
-	
 	
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
@@ -125,6 +139,9 @@ public class Spreadsheet implements Grid{
 	}
 	private void setFormulaCell(SpreadsheetLocation sl, String s){
 		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
+	}
+	public Cell getCell(Location loc){
+		return cells[loc.getRow()][loc.getCol()];
 	}
 	
 	private void startHistory(String num){
@@ -183,10 +200,6 @@ public class Spreadsheet implements Grid{
 		return 12;
 	}
 
-	public Cell getCell(Location loc){
-		return cells[loc.getRow()][loc.getCol()];
-	}
-
 	public String getGridText(){
 		String s = "   |A         |B         |C         |D         |E         |F         |G         |H         |I         |J         |K         |L         |";
 		for(int row = 0; row < 20; row++){
@@ -215,7 +228,6 @@ public class Spreadsheet implements Grid{
 	public static int getColumnNumberFromColumnLetter(String columnLetter){
 		return Character.toUpperCase(columnLetter.charAt(0)) - 'A';
 	}
-
 	public static String getColumnLetterFromColumnNumber(int columnNumber){
 		return "" + (char) ('A' + columnNumber);
 	}

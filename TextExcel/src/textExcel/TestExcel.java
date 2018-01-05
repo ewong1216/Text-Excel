@@ -61,7 +61,14 @@ public class TestExcel implements Grid{
 		}
 		return getGridText();
 	}
-	
+	/*
+	 * if(coms[2].contains(" ") && !coms[2].contains("\"")){
+				String[] formula = c.split(" ");
+				if(!formula[0].equals("(") || !formula[formula.length-1].equals(")"))
+					return "ERROR: Invalid command.\n";	
+			}
+			
+	 */
 	private void clearGrid(){
 		for(int row = 0; row < 20; row++){
 			for(int col = 0; col < 12; col++){
