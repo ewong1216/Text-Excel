@@ -108,7 +108,8 @@ public class Spreadsheet implements Grid{
 				return "";
 		}
 		if(coms.length == 3){
-			if(coms[2].contains("+") || coms[2].contains("-") || coms[2].contains("*") || coms[2].contains("/")){
+			System.out.println("get into correct spot");
+			if(coms[2].contains("+") || /*coms[2].contains("-") || */ coms[2].contains("*") || coms[2].contains("/")){
 				if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
 					return "ERROR: Invalid command.\n";
 				}
