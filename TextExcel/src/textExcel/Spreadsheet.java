@@ -113,6 +113,8 @@ public class Spreadsheet implements Grid{
 					return "ERROR: Invalid command.\n";
 				}
 			}
+			if(coms[2].endsWith("%"))
+				return "";
 		}
 		return "";
 	}
