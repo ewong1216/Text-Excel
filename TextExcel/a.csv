@@ -1,2 +1,8 @@
 A1,TextCell,"hi"
-B2,TextCell,"test"
+B2,TextCell,"bye"
+F9,TextCell,"over here"
+G13,TextCell,"percent below"
+G14,PercentCell,0.1
+G15,PercentCell,0.12119999999999999
+G16,TextCell,"long below"
+G17,TextCell,"100000000%"
