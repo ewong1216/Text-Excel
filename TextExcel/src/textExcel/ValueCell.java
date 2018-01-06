@@ -6,11 +6,10 @@ public class ValueCell extends RealCell{
 	private String input;
 	
 	public ValueCell(String input){
+		this.input = input;
 		if(!input.contains(".")){
-			System.out.println("inside");
 			input += ".0";
 		}
-		this.input = input;
 		value = Double.parseDouble(input);
 	}
 	
@@ -22,7 +21,7 @@ public class ValueCell extends RealCell{
 		if(input.length() > 10){
 			return input.substring(0, 10);
 		}
-		return Spreadsheet.fillSpaces(input);
+		return Spreadsheet.fillSpaces(value+"");
 	}
 	public String fullCellText(){
 		return input;
