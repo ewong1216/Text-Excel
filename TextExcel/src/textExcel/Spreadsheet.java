@@ -1,5 +1,9 @@
 package textExcel;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Spreadsheet implements Grid{
@@ -33,7 +37,7 @@ public class Spreadsheet implements Grid{
 		else if(com.length == 1){
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
 		}
-		else if(com[1].equals("=")){
+		if(com[1].equals("=")){
 			if(com[2].contains("\""))
 				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
 			else if(com[2].contains("%"))
@@ -84,7 +88,7 @@ public class Spreadsheet implements Grid{
 		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
 			return "ERROR: Invalid command.\n";
 		String[] coms = c.split(" ", 3);
-		if(coms[0].equals("history"))
+		if(coms[0].equals("history") || coms[0].equals("save") || coms[0].equals("open"))
 			return"";
 		if(coms.length == 2 && !coms[0].equalsIgnoreCase("clear"))
 			return "ERROR: Invalid command.\n";
@@ -206,11 +210,12 @@ public class Spreadsheet implements Grid{
 	public int getRows(){
 		return 20;
 	}
-
 	public int getCols(){
 		return 12;
 	}
-
+	public Cell[][] getCells(){
+		return cells;
+	}
 	public String getGridText(){
 		String s = "   |A         |B         |C         |D         |E         |F         |G         |H         |I         |J         |K         |L         |";
 		for(int row = 0; row < 20; row++){

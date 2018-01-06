@@ -1,5 +1,11 @@
 package textExcel;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class TestExcel implements Grid{
@@ -185,7 +191,7 @@ public class TestExcel implements Grid{
 		return "" + (char) ('A' + columnNumber);
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args)throws IOException{
 		/*
 		Scanner scan = new Scanner(System.in);
 	    String input = "";
@@ -196,8 +202,16 @@ public class TestExcel implements Grid{
 	    	System.out.println(t.processCommand(input));
 	    }
 	    scan.close();
-	    */
-		String[] s = new String[5];
-		System.out.println(s[0]);
+		
+		File f = new File("src/myData.csv");
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		bw.write("A1,TextCell,\"hello\"");
+		bw.write("\nA2,ValueCell,1.235");
+		System.out.println("written");
+		bw.close();
+		*/
+		BufferedReader br = new BufferedReader(new FileReader("Text.txt"));
+		String line = br.readLine();
+		System.out.println(line);
 	}
 }

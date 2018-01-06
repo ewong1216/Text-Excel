@@ -12,7 +12,7 @@ public class TextCell implements Cell{
 		else
 			abbText = Spreadsheet.fillSpaces(fullText);
 	}
-	
+
 	public String abbreviatedCellText(){
 		return abbText;
 	}
