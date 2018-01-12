@@ -1,0 +1,5 @@
+A1,TextCell,"hi"
+A2,TextCell,"test"
+B2,TextCell,"bye"
+C3,ValueCell,123
+D4,PercentCell,12.34

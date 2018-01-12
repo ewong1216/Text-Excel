@@ -34,7 +34,6 @@ public class TextExcel{
 	private static void open(String fileName,Cell[][] cells,int numLines)throws IOException{
 		Scanner scan = new Scanner(new File(fileName));
 		String line = "";
-		System.out.println(line);
 		for(int i = 0; i < numLines; i++){
 			line = scan.nextLine();
 			String after1stComma = line.substring(line.indexOf(",")+1);

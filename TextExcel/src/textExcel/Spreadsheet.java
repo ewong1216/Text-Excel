@@ -66,7 +66,12 @@ public class Spreadsheet implements Grid{
 	}
 	
 	private String checkForErrors(String c){
-		if(!c.contains(" ")){
+		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
+			return "ERROR: Invalid command.\n";
+		String[] coms = c.split(" ",3);
+		int cellRow;
+		int cellCol;
+		if(coms.length == 1){
 			if(c.length() > 3 && !c.equalsIgnoreCase("clear")){
 				return "ERROR: Invalid command.\n";
 			}
@@ -81,47 +86,41 @@ public class Spreadsheet implements Grid{
 				return "ERROR: Invalid command.\n";
 			}
 		}
-		if(c.contains("  ") || c.startsWith(" ") || c.endsWith(" "))
-			return "ERROR: Invalid command.\n";
-		String[] coms = c.split(" ", 3);
-		if(coms[0].equals("history") || coms[0].equals("save") || coms[0].equals("open"))
-			return"";
-		if(coms.length == 2 && !coms[0].equalsIgnoreCase("clear"))
-			return "ERROR: Invalid command.\n";
-		int cellRow;
-		if(coms[0].equalsIgnoreCase("clear")){
-			cellRow = Integer.parseInt(coms[1].substring(1));
-		}
-		else{
-			cellRow = Integer.parseInt(coms[0].substring(1));
-		}
-		if(cellRow > 20 || cellRow < 1)
-			return "ERROR: Invalid command.\n";
-		else if(coms[0].equalsIgnoreCase("clear"))
-			return "";
-		if(getColumnNumberFromColumnLetter(coms[0].substring(0, 1)) > 11)
-			return "ERROR: Invalid command.\n";
-		if(coms[2].contains("\"")){
-			if(!coms[2].startsWith("\"") || !coms[2].endsWith("\""))
-				return "ERROR: Invalid command.\n";
-			else
+		if(coms.length == 2){
+			if(coms[0].equals("save") || coms[0].equals("open"))
 				return "";
+			if(!coms[0].equalsIgnoreCase("clear"))
+				return "ERROR: Invalid command.\n";
+			cellRow = Integer.parseInt(coms[1].substring(1));
+			cellCol = getColumnNumberFromColumnLetter(coms[1].substring(0, 1));
+			if(cellRow > 20 || cellRow < 1 || cellCol > 11)
+				return "ERROR: Invalid command.\n";
+			return "";
 		}
 		if(coms.length == 3){
-			if(c.contains(" -")){
+			if(coms[0].equals("history"))
 				return "";
-			}
-			if(coms[2].contains("+") || coms[2].contains("-") ||  coms[2].contains("*") || coms[2].contains("/")){
-				if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
-					return "ERROR: Invalid command.\n";
-				}
-			}
-			if(coms[2].endsWith("%"))
+			if(c.contains(" -"))
 				return "";
-			if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1)
+			cellRow = Integer.parseInt(coms[0].substring(1));
+			cellCol = getColumnNumberFromColumnLetter(coms[0].substring(0, 1));
+			if(cellRow > 20 || cellRow < 1 || cellCol > 11)
 				return "ERROR: Invalid command.\n";
-			for(int i = 0; i < 26; i++){
-				if(coms[2].contains(getColumnLetterFromColumnNumber(i+1)) || coms[2].contains(getColumnLetterFromColumnNumber(i+1).toLowerCase()))
+			if(coms[2].contains("\"")){
+				if(!coms[2].startsWith("\"") || !coms[2].endsWith("\""))
+					return "ERROR: Invalid command.\n";
+				else
+					return "";
+			}
+			else{
+				if(coms[2].endsWith("%"))
+					return "";
+				if(coms[2].contains("+") || coms[2].contains("-") ||  coms[2].contains("*") || coms[2].contains("/")){
+					if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
+						return "ERROR: Invalid command.\n";
+					}
+				}
+				if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1)
 					return "ERROR: Invalid command.\n";
 			}
 		}
