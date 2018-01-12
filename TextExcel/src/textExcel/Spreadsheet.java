@@ -87,7 +87,7 @@ public class Spreadsheet implements Grid{
 			}
 		}
 		if(coms.length == 2){
-			if(coms[0].equals("save") || coms[0].equals("open"))
+			if(coms[0].equals("save") || coms[0].equals("open") || coms[0].equals("history"))
 				return "";
 			if(!coms[0].equalsIgnoreCase("clear"))
 				return "ERROR: Invalid command.\n";

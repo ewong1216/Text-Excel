@@ -8,9 +8,9 @@ public class ValueCell extends RealCell{
 	public ValueCell(String input){
 		this.input = input;
 		if(!input.contains(".")){
-			this.input += ".0";
+			input += ".0";
 		}
-		value = Double.parseDouble(this.input);
+		value = Double.parseDouble(input);
 	}
 	
 	public double getDoubleValue(){
