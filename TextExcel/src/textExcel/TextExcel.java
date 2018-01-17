@@ -54,12 +54,10 @@ public class TextExcel{
 
 	public static void main(String[] args) throws IOException{
 	    Scanner scan = new Scanner(System.in);
-	    String input = "";
 	    Spreadsheet s = new Spreadsheet();
+	    String input = scan.nextLine();
 	    int numFileLines = 0;
 	    while(!input.equalsIgnoreCase("quit")){
-	    	System.out.print("Enter your command here -->");
-	    	input = scan.nextLine();
 	    	if(input.startsWith("save")){
 	    		numFileLines = save(input.substring(input.indexOf(" ")+1),s.getCells());
 	    	}
@@ -67,6 +65,8 @@ public class TextExcel{
 	    		open(input.substring(input.indexOf(" ")+1),s.getCells(),numFileLines);
 	    	}
 	    	System.out.println(s.processCommand(input));
+	    	System.out.print("Enter your command here -->");
+	    	input = scan.nextLine();
 	    }
 	    scan.close();
 	}
