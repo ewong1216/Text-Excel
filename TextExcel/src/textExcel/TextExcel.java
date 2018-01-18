@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class TextExcel{
+	private static File f;
 	
 	private static int save(String fileName,Cell[][] cells)throws IOException{
-		File f = new File(fileName);
+		f = new File(fileName);
 		FileWriter fw = new FileWriter(f);
 		int numFileLines = 0;
 		for(int row = 0; row < 20; row++){
@@ -32,7 +33,7 @@ public class TextExcel{
 	}
 	
 	private static void open(String fileName,Cell[][] cells,int numLines)throws IOException{
-		Scanner scan = new Scanner(new File(fileName));
+		Scanner scan = new Scanner(f);
 		String line = "";
 		for(int i = 0; i < numLines; i++){
 			line = scan.nextLine();
@@ -55,6 +56,7 @@ public class TextExcel{
 	public static void main(String[] args) throws IOException{
 	    Scanner scan = new Scanner(System.in);
 	    Spreadsheet s = new Spreadsheet();
+	    System.out.print("Enter your command here -->");
 	    String input = scan.nextLine();
 	    int numFileLines = 0;
 	    while(!input.equalsIgnoreCase("quit")){

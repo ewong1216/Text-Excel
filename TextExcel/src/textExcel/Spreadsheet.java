@@ -119,12 +119,16 @@ public class Spreadsheet implements Grid{
 					if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
 						return "ERROR: Invalid command.\n";
 					}
+					else
+						return "";
 				}
-				if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1)
+				if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1){
 					return "ERROR: Invalid command.\n";
+				}
 				for(int i = 0; i < 26; i++){
-					if(coms[2].contains(getColumnLetterFromColumnNumber(i+1)) || coms[2].contains(getColumnLetterFromColumnNumber(i+1).toLowerCase()))
+					if(coms[2].contains(getColumnLetterFromColumnNumber(i+1)) || coms[2].contains(getColumnLetterFromColumnNumber(i+1).toLowerCase())){
 						return "ERROR: Invalid command.\n";
+					}
 				}
 			}
 		}

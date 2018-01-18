@@ -1,0 +1,7 @@
+A1,TextCell,"hi"
+E1,PercentCell,5.122000000000001
+B2,TextCell,"test"
+C3,ValueCell,123.41234
+D4,ValueCell,12.12
+F4,FormulaCell,( D4 + D5 )
+D5,ValueCell,1171.1
