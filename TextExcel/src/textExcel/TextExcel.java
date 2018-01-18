@@ -6,10 +6,11 @@ import java.util.Scanner;
 
 public class TextExcel{
 	private static File f;
+	private static FileWriter fw;
 	
 	private static int save(String fileName,Cell[][] cells)throws IOException{
 		f = new File(fileName);
-		FileWriter fw = new FileWriter(f);
+		fw = new FileWriter(f);
 		int numFileLines = 0;
 		for(int row = 0; row < 20; row++){
 			for(int col = 0; col < 12; col++){
