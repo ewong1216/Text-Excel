@@ -4,13 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+//Simply could not get file saving to work on BuildCi, but you can try it out.
+//It works when I do it on my laptop so this kind of problem is beyond my knowledge.
+
 public class TextExcel{
 	private static File f;
-	private static FileWriter fw;
 	
 	private static int save(String fileName,Cell[][] cells)throws IOException{
 		f = new File(fileName);
-		fw = new FileWriter(f);
+		FileWriter fw = new FileWriter(f);
 		int numFileLines = 0;
 		for(int row = 0; row < 20; row++){
 			for(int col = 0; col < 12; col++){
