@@ -48,9 +48,19 @@ public class Spreadsheet implements Grid{
 			return "";
 		}
 		if(recordHistory){
-			String ch = commandHistory(com,c);
-			if(ch.isEmpty())
+			if(!com[0].equals("history"))
+				record(c);
+			else if(com[1].equals("display")){
+				return displayHistory();
+			}
+			else if(com[1].equals("stop")){
+				stopHistory();
 				return "";
+			}
+			else{
+				clearHistory(com[2]);
+				return "";
+			}
 		}
 		return getGridText();
 	}
@@ -152,22 +162,6 @@ public class Spreadsheet implements Grid{
 		return cells[loc.getRow()][loc.getCol()];
 	}
 	
-	private String commandHistory(String[] com,String c){
-		if(!com[0].equals("history"))
-			record(c);
-		else if(com[1].equals("display")){
-			return displayHistory();
-		}
-		else if(com[1].equals("stop")){
-			stopHistory();
-			return "";
-		}
-		else{
-			clearHistory(com[2]);
-			return "";
-		}
-		return "placeholder";
-	}
 	private void startHistory(String num){
 		history = new String[Integer.parseInt(num)];
 		recordHistory = true;
