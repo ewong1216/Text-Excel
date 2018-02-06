@@ -3,19 +3,16 @@ package textExcel;
 public class PercentCell extends RealCell{
 	
 	private double percentValue;
-	private double doubleValue;
 	
 	public PercentCell(String input){
+		super(input);
 		percentValue = Double.parseDouble(input.substring(0,input.length()-1));
-		doubleValue = percentValue / 100;
+		super.setDoubleValue(percentValue / 100);
 	}
 	public PercentCell(Double dValue){
-		doubleValue = dValue;
+		super(dValue);
+		super.setDoubleValue(dValue);
 		percentValue = dValue * 100;
-	}
-	
-	public double getDoubleValue(){
-		return doubleValue;
 	}
 	
 	public String abbreviatedCellText(){
@@ -26,12 +23,14 @@ public class PercentCell extends RealCell{
 	}
 	
 	public String fullCellText(){
-		return doubleValue + "";
+		return super.getDoubleValue() + "";
 	}
 	
+	/*
 	public static void main(String[] args){
-		PercentCell p = new PercentCell("23.5%");
+		PercentCell p = new PercentCell(.235);
 		System.out.println(p.getDoubleValue());
+		System.out.println(p.abbreviatedCellText());
 	}
-	
+	*/
 }

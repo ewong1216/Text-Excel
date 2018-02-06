@@ -4,9 +4,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-//Simply could not get file saving to work on BuildCi, but you can try it out.
-//It works when I do it on my laptop so this kind of problem is beyond my knowledge.
-
 public class TextExcel{
 	private static File f;
 	

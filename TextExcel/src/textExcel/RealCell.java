@@ -1,16 +1,34 @@
 package textExcel;
 
 public class RealCell implements Cell{
-
-	public double getDoubleValue(){
-		return 0.0;
-	}
 	
+	private double dValue;
+	private String input;
+	
+	public RealCell(String i){
+		input = i;
+		if(i.contains("%") || i.contains("("))
+			return;
+		dValue = Double.parseDouble(input);
+	}
+	public RealCell(Double d){
+		dValue = d;
+		input = d+"";
+	}
+	public String getInput(){
+		return input;
+	}
+	public double getDoubleValue(){
+		return dValue;
+	}
+	public void setDoubleValue(Double d){
+		dValue = d;
+	}
 	public String abbreviatedCellText(){
-		return "";
+		return Spreadsheet.fillSpaces(input);
 	}
 
 	public String fullCellText(){
-		return "";
+		return input;
 	}
 }
