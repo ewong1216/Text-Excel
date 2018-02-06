@@ -20,16 +20,26 @@ public class FormulaCell extends RealCell{
 			else
 				dValue /= Double.parseDouble(arr[i+1]);
 		}
+		if((dValue+"").contains("999")){
+			String s = dValue+"";
+			s = s.substring(0, s.indexOf("999"));
+			int decimalLength = s.substring(s.indexOf(".")+1).length();
+			String toAdd = "0.";
+			for(int i =0; i < decimalLength-1; i++)
+				toAdd += "0";
+			toAdd += "1";
+			dValue = Double.parseDouble(s) + Double.parseDouble(toAdd);
+		}
 		return dValue;
 	}
 	
-	public String abbreviatedCellText(){
+	public String abbreviatedCellText(){	
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
 	
 	/*
 	public static void main(String[] args){
-		FormulaCell f = new FormulaCell("( 1 + 1 + 1 )");
+		FormulaCell f = new FormulaCell("( 5.4 * 3.5 / -1.4 + 27.4 - 11.182 )");
 	}
 	*/
 }

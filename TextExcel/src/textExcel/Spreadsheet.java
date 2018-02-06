@@ -242,6 +242,8 @@ public class Spreadsheet implements Grid{
 				input += " ";
 			}
 		}
+		else
+			input = input.substring(0, 10);
 		return input;
 	}
 	public static int getColumnNumberFromColumnLetter(String columnLetter){

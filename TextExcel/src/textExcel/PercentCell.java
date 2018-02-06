@@ -26,11 +26,4 @@ public class PercentCell extends RealCell{
 		return super.getDoubleValue() + "";
 	}
 	
-	/*
-	public static void main(String[] args){
-		PercentCell p = new PercentCell(.235);
-		System.out.println(p.getDoubleValue());
-		System.out.println(p.abbreviatedCellText());
-	}
-	*/
 }
