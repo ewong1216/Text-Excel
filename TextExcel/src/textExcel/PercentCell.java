@@ -28,4 +28,10 @@ public class PercentCell extends RealCell{
 	public String fullCellText(){
 		return doubleValue + "";
 	}
+	
+	public static void main(String[] args){
+		PercentCell p = new PercentCell("23.5%");
+		System.out.println(p.getDoubleValue());
+	}
+	
 }

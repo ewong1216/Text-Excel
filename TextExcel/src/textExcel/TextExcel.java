@@ -33,7 +33,6 @@ public class TextExcel{
 		fw.close();
 		return numFileLines;
 	}
-	
 	private static void open(String fileName,Cell[][] cells,int numLines)throws IOException{
 		Scanner scan = new Scanner(f);
 		String line = "";
