@@ -17,7 +17,12 @@ public class FormulaCell extends RealCell{
 		if(arr[0].equalsIgnoreCase("avg")){
 			//TODO
 		}
-		Double dValue = Double.parseDouble(arr[0]);
+		//TODO
+		Double dValue;
+		if(Spreadsheet.containsLetter(arr[0]))
+			dValue = ((RealCell) s.getCell(new SpreadsheetLocation(arr[0]))).getDoubleValue();
+		else
+			dValue = Double.parseDouble(arr[0]);
 		for(int i = 1; i < arr.length; i+=2){
 			String next = arr[i+1];
 			Double nextValue;
