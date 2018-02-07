@@ -1,9 +1,11 @@
 package textExcel;
 
 public class FormulaCell extends RealCell{
+	private Spreadsheet s;
 	
-	public FormulaCell(String input){
+	public FormulaCell(String input,Spreadsheet s){
 		super(input);
+		this.s = s;
 	}
 	
 	public double getDoubleValue(){
@@ -18,17 +20,19 @@ public class FormulaCell extends RealCell{
 		Double dValue = Double.parseDouble(arr[0]);
 		for(int i = 1; i < arr.length; i+=2){
 			String next = arr[i+1];
-			//if(next.contains(arg0))
+			Double nextValue;
+			if(Spreadsheet.containsLetter(next))
+				nextValue = ((RealCell) s.getCell(new SpreadsheetLocation(next))).getDoubleValue();
+			else
+				nextValue = Double.parseDouble(next);
 			if(arr[i].equals("+"))
-				dValue += Double.parseDouble(arr[i+1]);
+				dValue += nextValue;
 			else if(arr[i].equals("-"))
-				dValue -= Double.parseDouble(arr[i+1]);
+				dValue -= nextValue;
 			else if(arr[i].equals("*"))
-				dValue *= Double.parseDouble(arr[i+1]);
+				dValue *= nextValue;
 			else if(arr[i].equals("/"))
-				dValue /= Double.parseDouble(arr[i+1]);
-			else{}
-		
+				dValue /= nextValue;
 		}
 		if((dValue+"").contains("999")){
 			String s = dValue+"";

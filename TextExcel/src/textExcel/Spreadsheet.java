@@ -39,7 +39,7 @@ public class Spreadsheet implements Grid{
 			else if(com[2].contains("%"))
 				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
 			else if(com[2].contains("("))
-				setFormulaCell(new SpreadsheetLocation(com[0]),com[2]);
+				setFormulaCell(new SpreadsheetLocation(com[0]),com[2],this);
 			else
 				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
 		}
@@ -152,8 +152,8 @@ public class Spreadsheet implements Grid{
 	private void setValueCell(SpreadsheetLocation sl, String s){
 		cells[sl.getRow()][sl.getCol()] = new ValueCell(s);
 	}
-	private void setFormulaCell(SpreadsheetLocation sl, String s){
-		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s);
+	private void setFormulaCell(SpreadsheetLocation sl, String s, Spreadsheet sp){
+		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s,sp);
 	}
 	public Cell getCell(Location loc){
 		return cells[loc.getRow()][loc.getCol()];
@@ -232,6 +232,7 @@ public class Spreadsheet implements Grid{
 		s += "\n";
 		return s;
 	}
+	
 	public static boolean containsLetter(String input){
 		for(int i = 0; i < 26; i++){
 			if(input.contains(getColumnLetterFromColumnNumber(i+1)) || input.contains(getColumnLetterFromColumnNumber(i+1).toLowerCase())){
