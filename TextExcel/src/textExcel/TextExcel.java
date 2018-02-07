@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class TextExcel{
+	/*
 	private static File f;
 	
 	private static int save(String fileName,Cell[][] cells)throws IOException{
@@ -46,11 +47,11 @@ public class TextExcel{
 			else if(cellType.equals("PercentCell"))
 				cells[sl.getRow()][sl.getCol()] = new PercentCell(Double.parseDouble(fullText));
 			else if(cellType.equals("FormulaCell"))
-				cells[sl.getRow()][sl.getCol()] = new FormulaCell(fullText);
+				cells[sl.getRow()][sl.getCol()] = new FormulaCell(fullText,);
 		}
 		scan.close();
 	}
-
+	*/
 	public static void main(String[] args) throws IOException{
 	    Scanner scan = new Scanner(System.in);
 	    Spreadsheet s = new Spreadsheet();
@@ -58,12 +59,14 @@ public class TextExcel{
 	    String input = scan.nextLine();
 	    int numFileLines = 0;
 	    while(!input.equalsIgnoreCase("quit")){
+	    	/*
 	    	if(input.startsWith("save")){
 	    		numFileLines = save(input.substring(input.indexOf(" ")+1),s.getCells());
 	    	}
 	    	else if(input.startsWith("open")){
 	    		open(input.substring(input.indexOf(" ")+1),s.getCells(),numFileLines);
 	    	}
+	    	 */
 	    	System.out.println(s.processCommand(input));
 	    	System.out.print("Enter your command here -->");
 	    	input = scan.nextLine();
