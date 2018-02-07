@@ -125,11 +125,8 @@ public class Spreadsheet implements Grid{
 				if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1){
 					return "ERROR: Invalid command.\n";
 				}
-				for(int i = 0; i < 26; i++){
-					if(coms[2].contains(getColumnLetterFromColumnNumber(i+1)) || coms[2].contains(getColumnLetterFromColumnNumber(i+1).toLowerCase())){
-						return "ERROR: Invalid command.\n";
-					}
-				}
+				if(containsLetter(coms[2]))
+					return "ERROR: Invalid command.\n";
 			}
 		}
 		return "";
@@ -235,7 +232,14 @@ public class Spreadsheet implements Grid{
 		s += "\n";
 		return s;
 	}
-	
+	public static boolean containsLetter(String input){
+		for(int i = 0; i < 26; i++){
+			if(input.contains(getColumnLetterFromColumnNumber(i+1)) || input.contains(getColumnLetterFromColumnNumber(i+1).toLowerCase())){
+				return true;
+			}
+		}
+		return false;
+	}
 	public static String fillSpaces(String input){
 		if(input.length() < 10){
 			for(int i = input.length(); i < 10; i++){
