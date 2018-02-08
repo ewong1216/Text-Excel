@@ -9,6 +9,8 @@ public class RealCell implements Cell{
 		input = i;
 		if(i.contains("%") || i.contains("("))
 			return;
+		if(!input.contains("."))
+			input += ".0";
 		dValue = Double.parseDouble(input);
 	}
 	public RealCell(Double d){
@@ -27,7 +29,6 @@ public class RealCell implements Cell{
 	public String abbreviatedCellText(){
 		return Spreadsheet.fillSpaces(input);
 	}
-
 	public String fullCellText(){
 		return input;
 	}

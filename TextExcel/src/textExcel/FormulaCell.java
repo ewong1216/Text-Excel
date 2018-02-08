@@ -11,13 +11,10 @@ public class FormulaCell extends RealCell{
 	public double getDoubleValue(){
 		String input = super.getInput();
 		String[] arr = input.substring(2,input.length()-2).split(" ");
-		if(arr[0].equalsIgnoreCase("sum")){
-			//TODO
-		}
-		if(arr[0].equalsIgnoreCase("avg")){
-			//TODO
-		}
-		//TODO
+		if(arr[0].equalsIgnoreCase("sum"))
+			return calculate(arr[1],true);
+		if(arr[0].equalsIgnoreCase("avg"))
+			return calculate(arr[1],false);
 		Double dValue;
 		if(Spreadsheet.containsLetter(arr[0]))
 			dValue = ((RealCell) s.getCell(new SpreadsheetLocation(arr[0]))).getDoubleValue();
@@ -52,18 +49,24 @@ public class FormulaCell extends RealCell{
 		return dValue;
 	}
 	
-	public double sumFormula(String cellRange){
-		//TODO
-		return 0.0;
+	public double calculate(String cellRange,boolean isSum){
+		SpreadsheetLocation topLeft = new SpreadsheetLocation(cellRange.substring(0,cellRange.indexOf("-")));
+		SpreadsheetLocation bottomRight = new SpreadsheetLocation(cellRange.substring(cellRange.indexOf("-")+1));
+		Cell[][] cells = s.getCells();
+		double sum = 0.0;
+		int numCells = 0;
+		for(int row = topLeft.getRow(); row <= bottomRight.getRow(); row++){
+			for(int col = topLeft.getCol(); col <= bottomRight.getCol(); col++){
+				sum += ((RealCell) (cells[row][col])).getDoubleValue();
+				numCells ++;
+			}
+		}
+		if(isSum)
+			return sum;
+		return sum/numCells;
 	}
-	
 	public String abbreviatedCellText(){	
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
-	
-	/*
-	public static void main(String[] args){
-		FormulaCell f = new FormulaCell("( 5.4 * 3.5 / -1.4 + 27.4 - 11.182 )");
-	}
-	*/
+
 }
