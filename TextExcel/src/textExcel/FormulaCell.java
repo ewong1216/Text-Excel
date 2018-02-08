@@ -11,12 +11,10 @@ public class FormulaCell extends RealCell{
 	public double getDoubleValue(){
 		String input = super.getInput();
 		String[] arr = input.substring(2,input.length()-2).split(" ");
-		if(arr[0].equalsIgnoreCase("sum")){
+		if(arr[0].equalsIgnoreCase("sum"))
 			return calculate(arr[1],true);
-		}
-		if(arr[0].equalsIgnoreCase("avg")){
+		if(arr[0].equalsIgnoreCase("avg"))
 			return calculate(arr[1],false);
-		}
 		Double dValue;
 		if(Spreadsheet.containsLetter(arr[0]))
 			dValue = ((RealCell) s.getCell(new SpreadsheetLocation(arr[0]))).getDoubleValue();

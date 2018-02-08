@@ -235,7 +235,7 @@ public class Spreadsheet implements Grid{
 	
 	public static boolean containsLetter(String input){
 		for(int i = 0; i < 26; i++){
-			if(input.contains(getColumnLetterFromColumnNumber(i+1)) || input.contains(getColumnLetterFromColumnNumber(i+1).toLowerCase())){
+			if(input.contains(getColumnLetterFromColumnNumber(i)) || input.contains(getColumnLetterFromColumnNumber(i).toLowerCase())){
 				return true;
 			}
 		}
@@ -257,4 +257,5 @@ public class Spreadsheet implements Grid{
 	public static String getColumnLetterFromColumnNumber(int columnNumber){
 		return "" + (char) ('A' + columnNumber);
 	}
+
 }
