@@ -20,5 +20,7 @@ public class TextCell implements Cell{
 	public String fullCellText(){
 		return "\"" + fullText + "\"";
 	}
-
+	public double getDoubleValue(){
+		return 0.0;
+	}
 }

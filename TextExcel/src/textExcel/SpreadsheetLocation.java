@@ -1,7 +1,6 @@
 package textExcel;
 
-public class SpreadsheetLocation implements Location
-{
+public class SpreadsheetLocation implements Location{
 	private int cellCol;
 	private int cellRow;
 	 
@@ -13,7 +12,6 @@ public class SpreadsheetLocation implements Location
     public int getRow(){
         return cellRow;
     }
-
     public int getCol(){
         return cellCol;
     }

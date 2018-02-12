@@ -17,14 +17,14 @@ public class FormulaCell extends RealCell{
 			return calculate(arr[1],false);
 		Double dValue;
 		if(Spreadsheet.containsLetter(arr[0]))
-			dValue = ((RealCell) s.getCell(new SpreadsheetLocation(arr[0]))).getDoubleValue();
+			dValue = s.getCell(new SpreadsheetLocation(arr[0])).getDoubleValue();
 		else
 			dValue = Double.parseDouble(arr[0]);
 		for(int i = 1; i < arr.length; i+=2){
 			String next = arr[i+1];
 			Double nextValue;
 			if(Spreadsheet.containsLetter(next))
-				nextValue = ((RealCell) s.getCell(new SpreadsheetLocation(next))).getDoubleValue();
+				nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
 			else
 				nextValue = Double.parseDouble(next);
 			if(arr[i].equals("+"))
@@ -57,7 +57,7 @@ public class FormulaCell extends RealCell{
 		int numCells = 0;
 		for(int row = topLeft.getRow(); row <= bottomRight.getRow(); row++){
 			for(int col = topLeft.getCol(); col <= bottomRight.getCol(); col++){
-				sum += ((RealCell) (cells[row][col])).getDoubleValue();
+				sum += (cells[row][col]).getDoubleValue();
 				numCells ++;
 			}
 		}
