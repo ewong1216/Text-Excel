@@ -24,8 +24,13 @@ public class FormulaCell extends RealCell{
 			dValue = Double.parseDouble(arr[0]);
 		int index = findMulOrDiv(arr);
 		Double tDouble = 0.0;
-		if(index != -1)
-			tDouble = Double.parseDouble(arr[index-1]);
+		if(index != -1){
+			String before = arr[index-1];
+			if(Spreadsheet.containsLetter(before))
+				tDouble = s.getCell(new SpreadsheetLocation(before)).getDoubleValue();
+			else
+				tDouble = Double.parseDouble(before);
+		}
 		while(index != -1){
 			next = arr[index+1];
 			if(Spreadsheet.containsLetter(next))
