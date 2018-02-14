@@ -11,7 +11,6 @@ public class PercentCell extends RealCell{
 	}
 	public PercentCell(Double dValue){
 		super(dValue);
-		super.setDoubleValue(dValue);
 		percentValue = dValue * 100;
 	}
 	

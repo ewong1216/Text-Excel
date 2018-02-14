@@ -16,25 +16,42 @@ public class FormulaCell extends RealCell{
 		if(arr[0].equalsIgnoreCase("avg"))
 			return calculate(arr[1],false);
 		Double dValue;
+		Double nextValue;
+		String next = "";
 		if(Spreadsheet.containsLetter(arr[0]))
 			dValue = s.getCell(new SpreadsheetLocation(arr[0])).getDoubleValue();
 		else
 			dValue = Double.parseDouble(arr[0]);
-		for(int i = 1; i < arr.length; i+=2){
-			String next = arr[i+1];
-			Double nextValue;
+		int index = findMulOrDiv(arr);
+		Double tDouble = 0.0;
+		if(index != -1)
+			tDouble = Double.parseDouble(arr[index-1]);
+		while(index != -1){
+			next = arr[index+1];
 			if(Spreadsheet.containsLetter(next))
 				nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
 			else
 				nextValue = Double.parseDouble(next);
-			if(arr[i].equals("+"))
-				dValue += nextValue;
-			else if(arr[i].equals("-"))
-				dValue -= nextValue;
-			else if(arr[i].equals("*"))
-				dValue *= nextValue;
-			else if(arr[i].equals("/"))
-				dValue /= nextValue;
+			if(arr[index].equals("*"))
+				tDouble *= nextValue;
+			else
+				tDouble /= nextValue;
+			arr[index] = "";
+			arr[index-1] = tDouble + "";
+			index = findMulOrDiv(arr);
+		}
+		for(int i = 1; i < arr.length; i+=2){
+			if(!arr[i].isEmpty()){
+				next = arr[i+1];
+				if(Spreadsheet.containsLetter(next))
+					nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
+				else
+					nextValue = Double.parseDouble(next);
+				if(arr[i].equals("+"))
+					dValue += nextValue;
+				else if(arr[i].equals("-"))
+					dValue -= nextValue;
+			}
 		}
 		if((dValue+"").contains("999")){
 			String s = dValue+"";
@@ -49,7 +66,7 @@ public class FormulaCell extends RealCell{
 		return dValue;
 	}
 	
-	public double calculate(String cellRange,boolean isSum){
+	private double calculate(String cellRange,boolean isSum){
 		SpreadsheetLocation topLeft = new SpreadsheetLocation(cellRange.substring(0,cellRange.indexOf("-")));
 		SpreadsheetLocation bottomRight = new SpreadsheetLocation(cellRange.substring(cellRange.indexOf("-")+1));
 		Cell[][] cells = s.getCells();
@@ -68,5 +85,11 @@ public class FormulaCell extends RealCell{
 	public String abbreviatedCellText(){	
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
-
+	private int findMulOrDiv(String[] arr){
+		for(int i = 0; i < arr.length; i++){
+			if(arr[i].equals("*") || arr[i].equals("/"))
+				return i;
+		}
+		return -1;
+	}
 }
