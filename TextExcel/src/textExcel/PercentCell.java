@@ -9,7 +9,7 @@ public class PercentCell extends RealCell{
 		percentValue = Double.parseDouble(input.substring(0,input.length()-1));
 		super.setDoubleValue(percentValue / 100);
 	}
-	public PercentCell(Double dValue){
+	public PercentCell(double dValue){
 		super(dValue);
 		percentValue = dValue * 100;
 	}

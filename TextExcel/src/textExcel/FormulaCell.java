@@ -16,49 +16,44 @@ public class FormulaCell extends RealCell{
 		if(arr[0].equalsIgnoreCase("avg"))
 			return calculate(arr[1],false);
 		double dValue;
-		double nextValue;
-		String next = "";
 		if(Spreadsheet.containsLetter(arr[0]))
 			dValue = s.getCell(new SpreadsheetLocation(arr[0])).getDoubleValue();
 		else
 			dValue = Double.parseDouble(arr[0]);
-		int index = findMulOrDiv(arr);
-		double tDouble = 0.0;
-		if(index != -1){
-			String before = arr[index-1];
-			if(Spreadsheet.containsLetter(before))
-				tDouble = s.getCell(new SpreadsheetLocation(before)).getDoubleValue();
-			else
-				tDouble = Double.parseDouble(before);
-		}
-		while(index != -1){
-			next = arr[index+1];
-			if(Spreadsheet.containsLetter(next))
-				nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
-			else
-				nextValue = Double.parseDouble(next);
-			if(arr[index].equals("*"))
-				tDouble *= nextValue;
-			else
-				tDouble /= nextValue;
-			arr[index] = "";
-			arr[index-1] = tDouble + "";
-			index = findMulOrDiv(arr);
-		}
-		for(int i = 1; i < arr.length; i+=2){
-			next = arr[i+1];
-			if(Spreadsheet.containsLetter(next))
-				nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
-			else
-				nextValue = Double.parseDouble(next);
-			if(arr[i].equals("+"))
-				dValue += nextValue;
-			else if(arr[i].equals("-"))
-				dValue -= nextValue;
-			else if(arr[i].equals("*"))
-				dValue *= nextValue;
-			else if(arr[i].equals("/"))
-				dValue /= nextValue;
+		for(int j = 0; j < 2; j++){
+			for(int i = 1; i < arr.length; i+=2){
+				double nextValue;
+				String next = arr[i+1];
+				String before = arr[i-1];
+				if(Spreadsheet.containsLetter(next))
+					nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
+				else
+					nextValue = Double.parseDouble(next);
+				double tValue = 0.0;
+				if(j == 0 && (arr[i].equals("*") || arr[i].equals("/"))){
+					if(Spreadsheet.containsLetter(before))
+						tValue = s.getCell(new SpreadsheetLocation(before)).getDoubleValue();
+					else
+						tValue = Double.parseDouble(before);
+				}
+				//TODO
+				if(j == 0){
+					if(arr[i].equals("*"))
+						tValue *= nextValue;
+					else if(arr[i].equals("/"))
+						tValue /= nextValue;
+					if(i == 1 && tValue != 0)
+						arr[i+1] = tValue + "";
+					else if(tValue != 0)
+						arr[i-1] = tValue + "";
+				}
+				else{
+					if(arr[i].equals("+"))
+						dValue += nextValue;
+					else if(arr[i].equals("-"))
+						dValue -= nextValue;
+				}
+			}
 		}
 		if((dValue+"").contains("999")){
 			String s = dValue+"";
@@ -92,18 +87,5 @@ public class FormulaCell extends RealCell{
 	public String abbreviatedCellText(){	
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
-	private int findMulOrDiv(String[] arr){
-		boolean containsAddOrSub = false;
-		for(int i = 0; i < arr.length; i++){
-			if(arr[i].equals("+") || arr[i].equals("-"))
-				containsAddOrSub = true;
-			if(arr[i].equals("*") || arr[i].equals("/")){
-				if(containsAddOrSub)
-					return i;
-				else
-					return -1;
-			}
-		}
-		return -1;
-	}
+
 }

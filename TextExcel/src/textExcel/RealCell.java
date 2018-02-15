@@ -13,7 +13,7 @@ public class RealCell implements Cell{
 			input += ".0";
 		dValue = Double.parseDouble(input);
 	}
-	public RealCell(Double d){
+	public RealCell(double d){
 		dValue = d;
 		input = d+"";
 	}
