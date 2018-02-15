@@ -15,44 +15,33 @@ public class FormulaCell extends RealCell{
 			return calculate(arr[1],true);
 		if(arr[0].equalsIgnoreCase("avg"))
 			return calculate(arr[1],false);
-		double dValue;
-		if(Spreadsheet.containsLetter(arr[0]))
-			dValue = s.getCell(new SpreadsheetLocation(arr[0])).getDoubleValue();
-		else
-			dValue = Double.parseDouble(arr[0]);
-		for(int j = 0; j < 2; j++){
-			for(int i = 1; i < arr.length; i+=2){
-				double nextValue;
-				String next = arr[i+1];
-				String before = arr[i-1];
-				if(Spreadsheet.containsLetter(next))
-					nextValue = s.getCell(new SpreadsheetLocation(next)).getDoubleValue();
-				else
-					nextValue = Double.parseDouble(next);
-				double tValue = 0.0;
-				if(j == 0 && (arr[i].equals("*") || arr[i].equals("/"))){
-					if(Spreadsheet.containsLetter(before))
-						tValue = s.getCell(new SpreadsheetLocation(before)).getDoubleValue();
+		double dValue = setValue(arr[0]);
+		boolean containsBoth = false;
+		if((input.contains("+") || input.contains("-")) && (input.contains("*") || input.contains("/")))
+			containsBoth = true;
+		if(containsBoth){
+			for(int i = 1; i < arr.length; i +=2){
+				double nextValue = setValue(arr[i+1]);
+				double temp = setValue(arr[i-1]);
+				if(arr[i].equals("*") || arr[i].equals("/")){
+					if(i == 1)
+						arr[i+1] = calculateOp(arr[i],temp,nextValue) + "";
 					else
-						tValue = Double.parseDouble(before);
+						arr[i-1] = calculateOp(arr[i],temp,nextValue) + "";
+					arr[i] = "";
 				}
-				//TODO
-				if(j == 0){
-					if(arr[i].equals("*"))
-						tValue *= nextValue;
-					else if(arr[i].equals("/"))
-						tValue /= nextValue;
-					if(i == 1 && tValue != 0)
-						arr[i+1] = tValue + "";
-					else if(tValue != 0)
-						arr[i-1] = tValue + "";
+			}
+			for(int i = 1; i < arr.length; i +=2){
+				double nextValue = setValue(arr[i+1]);
+				if(!arr[i].isEmpty()){
+					dValue = calculateOp(arr[i],dValue,nextValue);
 				}
-				else{
-					if(arr[i].equals("+"))
-						dValue += nextValue;
-					else if(arr[i].equals("-"))
-						dValue -= nextValue;
-				}
+			}
+		}
+		else{
+			for(int i = 1; i < arr.length; i+=2){
+				double nextValue = setValue(arr[i+1]);
+				dValue = calculateOp(arr[i],dValue,nextValue);
 			}
 		}
 		if((dValue+"").contains("999")){
@@ -87,5 +76,19 @@ public class FormulaCell extends RealCell{
 	public String abbreviatedCellText(){	
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
-
+	
+	private double setValue(String num){
+		if(Spreadsheet.containsLetter(num))
+			return s.getCell(new SpreadsheetLocation(num)).getDoubleValue();
+		return Double.parseDouble(num);
+	}
+	private double calculateOp(String op,double d1, double d2){
+		if(op.equals("+"))
+			return d1 + d2;
+		if(op.equals("-"))
+			return d1 - d2;
+		if(op.equals("*"))
+			return d1 * d2;
+		return d1/d2;
+	}
 }
