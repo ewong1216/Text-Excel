@@ -42,8 +42,6 @@ public class FormulaCell extends RealCell{
 					if((dValue + "").contains("000"))
 						dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
 				}
-				else
-					dValue = setValue(arr[i+1]);
 			}
 		}
 		else{
