@@ -24,14 +24,13 @@ public class FormulaCell extends RealCell{
 			for(int i = 1; i < arr.length; i+=2){
 				if(arr[i].equals("*") || arr[i].equals("/")){
 					String s = arr[i-1] + " " + arr[i] + " " + arr[i+1];
-					System.out.println(s);
 					String res = fix999(calculateOp(arr[i],setValue(arr[i-1]),setValue(arr[i+1]))) + "";
 					if(res.contains("000"))
 						res = res.substring(0, res.indexOf("000"));
-					System.out.println(res);
 					input = input.substring(0,input.indexOf(s)) + res + input.substring(input.indexOf(s)+s.length());
 					arr = input.split(" ");
-					System.out.println(input);
+					if(i > 2)
+						i -= 2;
 				}
 			}
 		}
@@ -92,5 +91,9 @@ public class FormulaCell extends RealCell{
 			return Double.parseDouble(s) + Double.parseDouble(toAdd);
 		}
 		return d;
+	}
+	public static void main(String[] args){
+		FormulaCell f = new FormulaCell("( 3.0 + 5.4 * 3.5 / -1.4 + 27.4 - 11.182 * -2.0 )",new Spreadsheet());
+		System.out.println(f.getDoubleValue());
 	}
 }
