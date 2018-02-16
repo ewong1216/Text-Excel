@@ -17,11 +17,12 @@ public class FormulaCell extends RealCell{
 			return calculate(arr[1],false);
 		double dValue = setValue(arr[0]);
 		boolean containsBoth = false;
-		if((input.contains("+") || input.contains("-")) && (input.contains("*") || input.contains("/")))
+		if((input.contains("+") || input.contains(" - ")) && (input.contains("*") || input.contains("/")))
 			containsBoth = true;
 		if(containsBoth){
 			for(int i = 1; i < arr.length; i +=2){
 				double nextValue = setValue(arr[i+1]);
+				System.out.println(nextValue);
 				double temp = setValue(arr[i-1]);
 				if(arr[i].equals("*") || arr[i].equals("/")){
 					if(i == 1)
@@ -33,6 +34,7 @@ public class FormulaCell extends RealCell{
 			}
 			for(int i = 1; i < arr.length; i +=2){
 				double nextValue = setValue(arr[i+1]);
+				System.out.println(nextValue);
 				if(!arr[i].isEmpty()){
 					dValue = calculateOp(arr[i],dValue,nextValue);
 				}
@@ -41,10 +43,12 @@ public class FormulaCell extends RealCell{
 		else{
 			for(int i = 1; i < arr.length; i+=2){
 				double nextValue = setValue(arr[i+1]);
+				System.out.println(nextValue);
 				dValue = calculateOp(arr[i],dValue,nextValue);
 			}
 		}
 		if((dValue+"").contains("999")){
+			System.out.println("inside fix");
 			String s = dValue+"";
 			s = s.substring(0, s.indexOf("999"));
 			int decimalLength = s.substring(s.indexOf(".")+1).length();
