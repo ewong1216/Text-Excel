@@ -39,6 +39,8 @@ public class FormulaCell extends RealCell{
 			double nextValue = setValue(arr[i+1]);
 			dValue = calculateOp(arr[i],dValue,nextValue);
 		}
+		if((dValue + "").contains("000"))
+			dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
 		return fix999(dValue);
 	}
 	
