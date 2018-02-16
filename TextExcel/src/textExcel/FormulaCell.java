@@ -23,14 +23,15 @@ public class FormulaCell extends RealCell{
 		if(containsBoth){
 			for(int i = 1; i < arr.length; i+=2){
 				if(arr[i].equals("*") || arr[i].equals("/")){
-					if(i > 3)
-						i -= 2;
 					String s = arr[i-1] + " " + arr[i] + " " + arr[i+1];
+					System.out.println(s);
 					String res = fix999(calculateOp(arr[i],setValue(arr[i-1]),setValue(arr[i+1]))) + "";
 					if(res.contains("000"))
 						res = res.substring(0, res.indexOf("000"));
+					System.out.println(res);
 					input = input.substring(0,input.indexOf(s)) + res + input.substring(input.indexOf(s)+s.length());
 					arr = input.split(" ");
+					System.out.println(input);
 				}
 			}
 		}
