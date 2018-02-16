@@ -23,7 +23,8 @@ public class FormulaCell extends RealCell{
 		if(containsBoth){
 			for(int i = 1; i < arr.length; i+=2){
 				if(arr[i].equals("*") || arr[i].equals("/")){
-					i -= 2;
+					if(i > 2)
+						i -= 2;
 					String s = arr[i-1] + " " + arr[i] + " " + arr[i+1];
 					String res = fix999(calculateOp(arr[i],setValue(arr[i-1]),setValue(arr[i+1]))) + "";
 					if(res.contains("000"))
