@@ -15,49 +15,48 @@ public class FormulaCell extends RealCell{
 			return calculate(arr[1],true);
 		if(arr[0].equalsIgnoreCase("avg"))
 			return calculate(arr[1],false);
-		double dValue = setValue(arr[0]);
+		double dValue = 0.0;
 		boolean containsBoth = false;
 		if((input.contains("+") || input.contains(" - ")) && (input.contains("*") || input.contains("/")))
 			containsBoth = true;
 		if(containsBoth){
 			for(int i = 1; i < arr.length; i +=2){
 				double nextValue = setValue(arr[i+1]);
-				System.out.println(nextValue);
 				double temp = setValue(arr[i-1]);
 				if(arr[i].equals("*") || arr[i].equals("/")){
-					if(i == 1)
-						arr[i+1] = calculateOp(arr[i],temp,nextValue) + "";
-					else
-						arr[i-1] = calculateOp(arr[i],temp,nextValue) + "";
+					String tString = "";
+					tString = calculateOp(arr[i],temp,nextValue) + "";
+					if(tString.contains("000"))
+						tString = tString.substring(0, tString.indexOf("000"));
+					arr[i+1] = tString;
+					if(i != 1)
+						arr[i-1] = tString;
 					arr[i] = "";
 				}
+				
 			}
 			for(int i = 1; i < arr.length; i +=2){
 				double nextValue = setValue(arr[i+1]);
-				System.out.println(nextValue);
 				if(!arr[i].isEmpty()){
 					dValue = calculateOp(arr[i],dValue,nextValue);
+					if((dValue + "").contains("000"))
+						dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
 				}
+				else
+					dValue = setValue(arr[i-1]);
 			}
 		}
 		else{
+			dValue = setValue(arr[0]);
 			for(int i = 1; i < arr.length; i+=2){
 				double nextValue = setValue(arr[i+1]);
-				System.out.println(nextValue);
 				dValue = calculateOp(arr[i],dValue,nextValue);
 			}
 		}
-		if((dValue+"").contains("999")){
-			System.out.println("inside fix");
-			String s = dValue+"";
-			s = s.substring(0, s.indexOf("999"));
-			int decimalLength = s.substring(s.indexOf(".")+1).length();
-			String toAdd = "0.";
-			for(int t =0; t < decimalLength-1; t++)
-				toAdd += "0";
-			toAdd += "1";
-			dValue = Double.parseDouble(s) + Double.parseDouble(toAdd);
-		}
+		if((dValue+"").contains("999"))
+			dValue = fix999(dValue);
+		if((dValue + "").contains("000"))
+			dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
 		return dValue;
 	}
 	
@@ -94,5 +93,15 @@ public class FormulaCell extends RealCell{
 		if(op.equals("*"))
 			return d1 * d2;
 		return d1/d2;
+	}
+	private double fix999(double d){
+		String s = d+"";
+		s = s.substring(0, s.indexOf("999"));
+		int decimalLength = s.substring(s.indexOf(".")+1).length();
+		String toAdd = "0.";
+		for(int t =0; t < decimalLength-1; t++)
+			toAdd += "0";
+		toAdd += "1";
+		return Double.parseDouble(s) + Double.parseDouble(toAdd);
 	}
 }
