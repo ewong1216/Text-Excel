@@ -40,8 +40,6 @@ public class FormulaCell extends RealCell{
 			double nextValue = setValue(arr[i+1]);
 			dValue = calculateOp(arr[i],dValue,nextValue);
 		}
-		if((dValue + "").contains("000"))
-			dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
 		return fix999(dValue);
 	}
 	
@@ -91,9 +89,5 @@ public class FormulaCell extends RealCell{
 			return Double.parseDouble(s) + Double.parseDouble(toAdd);
 		}
 		return d;
-	}
-	public static void main(String[] args){
-		FormulaCell f = new FormulaCell("( 3.0 + 5.4 * 3.5 / -1.4 + 27.4 - 11.182 * -2.0 )",new Spreadsheet());
-		System.out.println(f.getDoubleValue());
 	}
 }
