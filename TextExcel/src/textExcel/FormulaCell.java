@@ -10,7 +10,8 @@ public class FormulaCell extends RealCell{
 	
 	public double getDoubleValue(){
 		String input = super.getInput();
-		String[] arr = input.substring(2,input.length()-2).split(" ");
+		input = input.substring(2,input.length()-2);
+		String[] arr = input.split(" ");
 		if(arr[0].equalsIgnoreCase("sum"))
 			return calculate(arr[1],true);
 		if(arr[0].equalsIgnoreCase("avg"))
@@ -20,42 +21,24 @@ public class FormulaCell extends RealCell{
 		if((input.contains("+") || input.contains(" - ")) && (input.contains("*") || input.contains("/")))
 			containsBoth = true;
 		if(containsBoth){
-			for(int i = 1; i < arr.length; i +=2){
-				double nextValue = setValue(arr[i+1]);
-				double temp = setValue(arr[i-1]);
-				if(arr[i].equals("*") || arr[i].equals("/")){
-					String tString = "";
-					tString = calculateOp(arr[i],temp,nextValue) + "";
-					if(tString.contains("000"))
-						tString = tString.substring(0, tString.indexOf("000"));
-					arr[i+1] = tString;
-					if(i != 1)
-						arr[i-1] = tString;
-					arr[i] = "";
-				}
-				
-			}
-			for(int i = 1; i < arr.length; i +=2){
-				double nextValue = setValue(arr[i+1]);
-				if(!arr[i].isEmpty()){
-					dValue = calculateOp(arr[i],dValue,nextValue);
-					if((dValue + "").contains("000"))
-						dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
-				}
-			}
-		}
-		else{
-			dValue = setValue(arr[0]);
 			for(int i = 1; i < arr.length; i+=2){
-				double nextValue = setValue(arr[i+1]);
-				dValue = calculateOp(arr[i],dValue,nextValue);
+				if(arr[i].equals("*") || arr[i].equals("/")){
+					String s = arr[i-1] + " " + arr[i] + " " + arr[i+1];
+					String res = calculateOp(arr[i],setValue(arr[i-1]),setValue(arr[i+1])) + "";
+					input = input.substring(0,input.indexOf(s)) + res + input.substring(input.indexOf(s)+res.length()+2);
+					System.out.println(input);
+				}
 			}
 		}
-		if((dValue+"").contains("999"))
-			dValue = fix999(dValue);
+		arr = input.split(" ");
+		dValue = setValue(arr[0]);
+		for(int i = 1; i < arr.length; i+=2){
+			double nextValue = setValue(arr[i+1]);
+			dValue = calculateOp(arr[i],dValue,nextValue);
+		}
 		if((dValue + "").contains("000"))
 			dValue = Double.parseDouble((dValue+"").substring(0,(dValue+"").indexOf("000")));
-		return dValue;
+		return fix999(dValue);
 	}
 	
 	private double calculate(String cellRange,boolean isSum){
@@ -93,13 +76,16 @@ public class FormulaCell extends RealCell{
 		return d1/d2;
 	}
 	private double fix999(double d){
-		String s = d+"";
-		s = s.substring(0, s.indexOf("999"));
-		int decimalLength = s.substring(s.indexOf(".")+1).length();
-		String toAdd = "0.";
-		for(int t =0; t < decimalLength-1; t++)
-			toAdd += "0";
-		toAdd += "1";
-		return Double.parseDouble(s) + Double.parseDouble(toAdd);
+		if((d+"").contains("999")){
+			String s = d+"";
+			s = s.substring(0, s.indexOf("999"));
+			int decimalLength = s.substring(s.indexOf(".")+1).length();
+			String toAdd = "0.";
+			for(int t =0; t < decimalLength-1; t++)
+				toAdd += "0";
+			toAdd += "1";
+			return Double.parseDouble(s) + Double.parseDouble(toAdd);
+		}
+		return d;
 	}
 }
