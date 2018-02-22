@@ -2,7 +2,7 @@ package textExcel;
 
 public class FormulaCell extends RealCell{
 	private Spreadsheet s;
-	private SpreadsheetLocation[] cellReferences;
+	private String[] cellReferences;
 	
 	public FormulaCell(String input,Spreadsheet s){
 		super(input);
@@ -21,10 +21,10 @@ public class FormulaCell extends RealCell{
 					}
 				}
 			}
-			cellReferences = new SpreadsheetLocation[count];
+			cellReferences = new String[count];
 			if(cellReferences.length != 0){
 				for(int i = 0; i < cellReferences.length; i++){
-					cellReferences[i] = new SpreadsheetLocation(input.substring(indexes[i],input.indexOf(" ",indexes[i])));
+					cellReferences[i] = input.substring(indexes[i],input.indexOf(" ",indexes[i]));
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class FormulaCell extends RealCell{
 	/*
 	private boolean hasError(){
 		for(int i = 0; i < cellReferences.length; i++){
-			Cell c = s.getCell(cellReferences[i]);
+			Cell c = s.getCell(new SpreadsheetLocation(cellReferences[i]));
 			if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
 				return true;
 		}
