@@ -78,7 +78,7 @@ public class Spreadsheet implements Grid{
 			else{
 				for(int row = 0; row < 20; row++){
 					for(int col = 0; col < 12; col++){
-						String cellName = getColumnLetterFromColumnNumber(col) + (row+1);
+						String cellName = numberToLetter(col) + (row+1);
 						if(cellName.equalsIgnoreCase(c))
 							return"";
 					}
@@ -92,7 +92,7 @@ public class Spreadsheet implements Grid{
 			if(!coms[0].equalsIgnoreCase("clear"))
 				return "ERROR: Invalid command.\n";
 			cellRow = Integer.parseInt(coms[1].substring(1));
-			cellCol = getColumnNumberFromColumnLetter(coms[1].substring(0, 1));
+			cellCol = letterToNumber(coms[1].substring(0, 1));
 			if(cellRow > 20 || cellRow < 1 || cellCol > 11)
 				return "ERROR: Invalid command.\n";
 			return "";
@@ -103,7 +103,7 @@ public class Spreadsheet implements Grid{
 			if(c.contains(" -"))
 				return "";
 			cellRow = Integer.parseInt(coms[0].substring(1));
-			cellCol = getColumnNumberFromColumnLetter(coms[0].substring(0, 1));
+			cellCol = letterToNumber(coms[0].substring(0, 1));
 			if(cellRow > 20 || cellRow < 1 || cellCol > 11)
 				return "ERROR: Invalid command.\n";
 			if(coms[2].contains("\"")){
@@ -235,7 +235,7 @@ public class Spreadsheet implements Grid{
 	
 	public static boolean containsLetter(String input){
 		for(int i = 0; i < 26; i++){
-			if(input.contains(getColumnLetterFromColumnNumber(i)) || input.contains(getColumnLetterFromColumnNumber(i).toLowerCase())){
+			if(input.contains(numberToLetter(i)) || input.contains(numberToLetter(i).toLowerCase())){
 				return true;
 			}
 		}
@@ -251,10 +251,10 @@ public class Spreadsheet implements Grid{
 			input = input.substring(0, 10);
 		return input;
 	}
-	public static int getColumnNumberFromColumnLetter(String columnLetter){
+	public static int letterToNumber(String columnLetter){
 		return Character.toUpperCase(columnLetter.charAt(0)) - 'A';
 	}
-	public static String getColumnLetterFromColumnNumber(int columnNumber){
+	public static String numberToLetter(int columnNumber){
 		return "" + (char) ('A' + columnNumber);
 	}
 

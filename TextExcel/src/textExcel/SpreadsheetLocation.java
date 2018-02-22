@@ -6,7 +6,7 @@ public class SpreadsheetLocation implements Location{
 	 
 	public SpreadsheetLocation(String cellName){
 		cellRow = Integer.parseInt(cellName.substring(1)) - 1;
-		cellCol = Spreadsheet.getColumnNumberFromColumnLetter(cellName.substring(0,1));
+		cellCol = Spreadsheet.letterToNumber(cellName.substring(0,1));
 	}
 	
     public int getRow(){

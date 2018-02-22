@@ -2,10 +2,32 @@ package textExcel;
 
 public class FormulaCell extends RealCell{
 	private Spreadsheet s;
+	private SpreadsheetLocation[] cellReferences;
 	
 	public FormulaCell(String input,Spreadsheet s){
 		super(input);
 		this.s = s;
+		if(Spreadsheet.containsLetter(input)){
+			String temp = input;
+			int[] indexes = new int[20];
+			int count = 0;
+			while(Spreadsheet.containsLetter(temp)){
+				for(int i = 0; i < 26; i++){
+					int index = temp.indexOf(Spreadsheet.numberToLetter(i));
+					if(index != -1){
+						indexes[count] = index;
+						count++;
+						temp = temp.substring(0,index) + "0" + temp.substring(index+1);
+					}
+				}
+			}
+			cellReferences = new SpreadsheetLocation[count];
+			if(cellReferences.length != 0){
+				for(int i = 0; i < cellReferences.length; i++){
+					cellReferences[i] = new SpreadsheetLocation(input.substring(indexes[i],input.indexOf(" ",indexes[i])));
+				}
+			}
+		}
 	}
 	
 	public double getDoubleValue(){
@@ -59,7 +81,10 @@ public class FormulaCell extends RealCell{
 			return sum;
 		return sum/numCells;
 	}
-	public String abbreviatedCellText(){	
+	
+	public String abbreviatedCellText(){
+		if(hasError())
+			return "#ERROR    ";
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
 	
@@ -89,5 +114,13 @@ public class FormulaCell extends RealCell{
 			return Double.parseDouble(s) + Double.parseDouble(toAdd);
 		}
 		return d;
+	}
+	private boolean hasError(){
+		for(int i = 0; i < cellReferences.length; i++){
+			Cell c = s.getCell(cellReferences[i]);
+			if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
+				return true;
+		}
+		return false;
 	}
 }
