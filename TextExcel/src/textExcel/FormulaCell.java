@@ -83,8 +83,8 @@ public class FormulaCell extends RealCell{
 	}
 	
 	public String abbreviatedCellText(){
-		if(hasError())
-			return "#ERROR    ";
+		//if(hasError())
+		//	return "#ERROR    ";
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
 	
@@ -115,6 +115,7 @@ public class FormulaCell extends RealCell{
 		}
 		return d;
 	}
+	/*
 	private boolean hasError(){
 		for(int i = 0; i < cellReferences.length; i++){
 			Cell c = s.getCell(cellReferences[i]);
@@ -123,4 +124,5 @@ public class FormulaCell extends RealCell{
 		}
 		return false;
 	}
+	*/
 }
