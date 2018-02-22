@@ -128,6 +128,8 @@ public class FormulaCell extends RealCell{
 			Cell c = s.getCell(new SpreadsheetLocation(cellReferences[i]));
 			if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
 				return true;
+			if(c.abbreviatedCellText().contains("#ERROR"))
+				return true;
 		}
 		return false;
 	}
