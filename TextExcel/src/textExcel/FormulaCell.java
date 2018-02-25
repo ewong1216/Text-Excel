@@ -135,7 +135,8 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}	
-
+		if((getDoubleValue()+"").contains("Infinity"))
+			return true;
 		return false;
 	}
 
