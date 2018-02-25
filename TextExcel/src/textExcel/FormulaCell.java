@@ -7,10 +7,8 @@ public class FormulaCell extends RealCell{
 	public FormulaCell(String input,Spreadsheet s){
 		super(input);
 		this.s = s;
-		//TODO
 		String temp = input;
 		int numOperands = input.substring(2,input.length()-2).split(" ").length/2 + 1;
-		System.out.println(numOperands);
 		if(temp.contains("SUM"))
 			temp = temp.substring(0,temp.indexOf("SUM")) + "000" + temp.substring(temp.indexOf("SUM")+3);
 		if(temp.contains("AVG"))
@@ -28,7 +26,6 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}
-		
 		cellReferences = new String[count];
 		if(cellReferences.length != 0){
 			for(int i = 0; i < cellReferences.length; i++){
@@ -92,8 +89,8 @@ public class FormulaCell extends RealCell{
 	}
 	
 	public String abbreviatedCellText(){
-		//if(hasError())
-		//	return "#ERROR    ";
+		if(hasError())
+			return "#ERROR    ";
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
 	
@@ -124,7 +121,7 @@ public class FormulaCell extends RealCell{
 		}
 		return d;
 	}
-	/*
+
 	private boolean hasError(){
 		for(int i = 0; i < cellReferences.length; i++){
 			Cell c = s.getCell(new SpreadsheetLocation(cellReferences[i]));
@@ -135,5 +132,5 @@ public class FormulaCell extends RealCell{
 		}
 		return false;
 	}
-	*/
+	
 }
