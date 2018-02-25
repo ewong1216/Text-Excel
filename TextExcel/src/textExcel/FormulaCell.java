@@ -119,14 +119,14 @@ public class FormulaCell extends RealCell{
 		}
 		if(super.getInput().contains(" / 0"))
 			return true;
+		/*
 		String[] operands = super.getInput().substring(2,super.getInput().length()-2).split(" ");
-		if(operands.length%2 == 0){
-			for(int i = 1; i < operands.length; i+=2){
-				double d = setValue(operands[i+1]);
-				if(operands[i].equals("/") && d == 0.0)
-					return true;
-			}
+		for(int i = 1; i < operands.length; i+=2){
+			double d = setValue(operands[i+1]);
+			if(operands[i].equals("/") && d == 0.0)
+				return true;
 		}
+		*/
 		return false;
 	}
 
