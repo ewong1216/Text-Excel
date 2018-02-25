@@ -15,6 +15,7 @@ public class FormulaCell extends RealCell{
 			temp = temp.substring(0,temp.indexOf("AVG")) + "000" + temp.substring(temp.indexOf("AVG")+3);
 		int[] indexes = new int[20];
 		int count = 0;
+		/*
 		while(Spreadsheet.containsLetter(temp)){
 			for(int i = 0; i < 26; i++){
 				int index = temp.indexOf(Spreadsheet.numberToLetter(i));
@@ -26,7 +27,7 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}
-		System.out.println(temp);
+		*/
 		cellReferences = new String[count];
 		if(cellReferences.length != 0){
 			for(int i = 0; i < cellReferences.length; i++){
