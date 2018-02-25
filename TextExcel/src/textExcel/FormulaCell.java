@@ -2,12 +2,12 @@ package textExcel;
 
 public class FormulaCell extends RealCell{
 	private Spreadsheet s;
-	//private String[] cellReferences;
+	private String[] cellReferences;
 	
 	public FormulaCell(String input,Spreadsheet s){
 		super(input);
 		this.s = s;
-		/*
+		
 		if(Spreadsheet.containsLetter(input)){
 			String temp = input;
 			if(temp.contains("SUM"))
@@ -36,7 +36,7 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}
-		*/
+		
 	}
 	
 	public double getDoubleValue(){
