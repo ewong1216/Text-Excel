@@ -65,7 +65,7 @@ public class FormulaCell extends RealCell{
 		int numCells = 0;
 		for(int row = topLeft.getRow(); row <= bottomRight.getRow(); row++){
 			for(int col = topLeft.getCol(); col <= bottomRight.getCol(); col++){
-				sum += (cells[row][col]).getDoubleValue();
+				sum += cells[row][col].getDoubleValue();
 				numCells ++;
 			}
 		}
@@ -119,14 +119,20 @@ public class FormulaCell extends RealCell{
 		}
 		if(super.getInput().contains(" / 0"))
 			return true;
-		/*
-		String[] operands = super.getInput().substring(2,super.getInput().length()-2).split(" ");
-		for(int i = 1; i < operands.length; i+=2){
-			double d = setValue(operands[i+1]);
-			if(operands[i].equals("/") && d == 0.0)
-				return true;
-		}
-		*/
+		String[] formula = super.getInput().substring(2,super.getInput().length()-2).split(" ");
+		if(formula[0].equalsIgnoreCase("sum") || formula[0].equalsIgnoreCase("avg")){
+			String cellRange = formula[1];
+			SpreadsheetLocation topLeft = new SpreadsheetLocation(cellRange.substring(0,cellRange.indexOf("-")));
+			SpreadsheetLocation bottomRight = new SpreadsheetLocation(cellRange.substring(cellRange.indexOf("-")+1));
+			Cell[][] cells = s.getCells();
+			for(int row = topLeft.getRow(); row <= bottomRight.getRow(); row++){
+				for(int col = topLeft.getCol(); col <= bottomRight.getCol(); col++){
+					Cell c = cells[row][col];
+					if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
+						return true;
+				}
+			}
+		}	
 		return false;
 	}
 
