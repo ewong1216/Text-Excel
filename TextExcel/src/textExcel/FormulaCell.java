@@ -134,6 +134,7 @@ public class FormulaCell extends RealCell{
 						return true;
 				}
 			}
+			return false;
 		}	
 		for(int i = 1; i < formula.length; i++){
 			double d = setValue(formula[i+1]);
