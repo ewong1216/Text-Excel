@@ -112,22 +112,22 @@ public class Spreadsheet implements Grid{
 				else
 					return "";
 			}
-			else{
-				if(coms[2].endsWith("%"))
+			if(coms[2].endsWith("%"))
+				return "";
+			if(coms[2].contains("+") || coms[2].contains("-") ||  coms[2].contains("*") || coms[2].contains("/")){
+				if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
+					return "ERROR: Invalid command.\n";
+				}
+				else
 					return "";
-				if(coms[2].contains("+") || coms[2].contains("-") ||  coms[2].contains("*") || coms[2].contains("/")){
-					if(!coms[2].contains("(") || !coms[2].contains(")") || !coms[2].contains(" ")){
-						return "ERROR: Invalid command.\n";
-					}
-					else
-						return "";
-				}
-				if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1){
-					return "ERROR: Invalid command.\n";
-				}
-				if(containsLetter(coms[2]))
-					return "ERROR: Invalid command.\n";
 			}
+			if(coms[2].indexOf(".",coms[2].indexOf(".")+1) != -1){
+				return "ERROR: Invalid command.\n";
+			}
+			if(containsLetter(coms[2])){
+				if(!coms[2].contains("(") || !coms[2].contains(")"))
+					return "ERROR: Invalid command.\n";
+			}			
 		}
 		return "";
 	}

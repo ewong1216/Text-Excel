@@ -7,38 +7,24 @@ public class FormulaCell extends RealCell{
 	public FormulaCell(String input,Spreadsheet s){
 		super(input);
 		this.s = s;
-		String temp = input;
-		int numOperands = input.substring(2,input.length()-2).split(" ").length/2 + 1;
-		if(temp.contains("SUM"))
-			temp = temp.substring(0,temp.indexOf("SUM")) + "000" + temp.substring(temp.indexOf("SUM")+3);
-		if(temp.contains("AVG"))
-			temp = temp.substring(0,temp.indexOf("AVG")) + "000" + temp.substring(temp.indexOf("AVG")+3);
-		int[] indexes = new int[20];
+		String[] operands = input.substring(2,input.length()-2).split(" ");
+		if(operands[0].equalsIgnoreCase("sum") || operands[0].equalsIgnoreCase("avg"))
+			operands[0] = "";
 		int count = 0;
-		for(int j = 0; j < numOperands; j++){
-			for(int i = 0; i < 26; i++){
-				int index = temp.indexOf(Spreadsheet.numberToLetter(i));
-				if(index != -1){
-					indexes[count] = index;
-					count++;
-					temp = temp.substring(0,index) + "0" + temp.substring(index+1);
-					break;
-				}
-			}
+		int[] indexes = new int[20];
+		for(int i = 0; i < operands.length; i+=2){
+			if(Spreadsheet.containsLetter(operands[i])){
+				indexes[count] = i;
+				count++;
+			}	
 		}
 		cellReferences = new String[count];
-		if(cellReferences.length != 0){
-			for(int i = 0; i < cellReferences.length; i++){
-				cellReferences[i] = input.substring(indexes[i],input.indexOf(" ",indexes[i]));
-				if(cellReferences[i].contains("-"))
-					cellReferences[i] = cellReferences[i].substring(0, cellReferences[i].indexOf("-"));
-			}
-		}	
+		for(int i = 0; i < cellReferences.length; i++){
+			cellReferences[i] = operands[indexes[i]];
+		}
 	}
-	
 	public double getDoubleValue(){
-		String input = super.getInput();
-		input = input.substring(2,input.length()-2);
+		String input = super.getInput().substring(2,super.getInput().length()-2);
 		String[] arr = input.split(" ");
 		if(arr[0].equalsIgnoreCase("sum"))
 			return calculate(arr[1],true);
@@ -129,8 +115,17 @@ public class FormulaCell extends RealCell{
 				return true;
 			if(c.abbreviatedCellText().contains("#ERROR"))
 				return true;
+			//TODO: Circular Reference Errors
+		}
+		if(super.getInput().contains(" / 0"))
+			return true;
+		String[] operands = super.getInput().substring(2,super.getInput().length()-2).split(" ");
+		for(int i = 1; i < operands.length; i+=2){
+			double d = setValue(operands[i+1]);
+			if(operands[i].equals("/") && d == 0.0)
+				return true;
 		}
 		return false;
 	}
-	
+
 }

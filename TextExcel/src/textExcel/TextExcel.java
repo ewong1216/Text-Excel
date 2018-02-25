@@ -1,10 +1,9 @@
 package textExcel;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class TextExcel{
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args){
 	    Scanner scan = new Scanner(System.in);
 	    Spreadsheet s = new Spreadsheet();
 	    System.out.print("Enter your command here -->");
