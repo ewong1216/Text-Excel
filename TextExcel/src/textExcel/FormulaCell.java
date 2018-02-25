@@ -9,14 +9,15 @@ public class FormulaCell extends RealCell{
 		this.s = s;
 		//TODO
 		String temp = input;
+		int numOperands = input.substring(2,input.length()-2).split(" ").length/2 + 1;
+		System.out.println(numOperands);
 		if(temp.contains("SUM"))
 			temp = temp.substring(0,temp.indexOf("SUM")) + "000" + temp.substring(temp.indexOf("SUM")+3);
 		if(temp.contains("AVG"))
 			temp = temp.substring(0,temp.indexOf("AVG")) + "000" + temp.substring(temp.indexOf("AVG")+3);
 		int[] indexes = new int[20];
 		int count = 0;
-		/*
-		while(Spreadsheet.containsLetter(temp)){
+		for(int j = 0; j < numOperands; j++){
 			for(int i = 0; i < 26; i++){
 				int index = temp.indexOf(Spreadsheet.numberToLetter(i));
 				if(index != -1){
@@ -27,7 +28,7 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}
-		*/
+		
 		cellReferences = new String[count];
 		if(cellReferences.length != 0){
 			for(int i = 0; i < cellReferences.length; i++){
