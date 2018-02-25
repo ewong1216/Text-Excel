@@ -135,6 +135,11 @@ public class FormulaCell extends RealCell{
 				}
 			}
 		}	
+		for(int i = 1; i < formula.length; i++){
+			double d = setValue(formula[i+1]);
+			if(formula[i].equals("/") && d == 0.0)
+				return true;
+		}
 		return false;
 	}
 
