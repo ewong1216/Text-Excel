@@ -130,6 +130,8 @@ public class FormulaCell extends RealCell{
 					Cell c = cells[row][col];
 					if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
 						return true;
+					if(c.abbreviatedCellText().contains("#ERROR"))
+						return true;
 				}
 			}
 		}	
