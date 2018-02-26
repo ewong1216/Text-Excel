@@ -25,9 +25,10 @@ public class FormulaCell extends RealCell{
 		circError = false;
 		for(int i = 0; i < cellReferences.length; i++){
 			cellReferences[i] = operands[indexes[i]].toUpperCase();
-			if(cellReferences[i].equals(n) || circRef(this,n))
+			if(cellReferences[i].equals(name))
 				circError = true;
 		}
+		
 	}
 	public double getDoubleValue(){
 		String input = super.getInput().substring(2,super.getInput().length()-2);
@@ -117,7 +118,6 @@ public class FormulaCell extends RealCell{
 	
 	private boolean hasEvaluationError(){
 		for(int i = 0; i < cellReferences.length; i++){
-			//TODO: Circular Reference Errors
 			Cell c = s.getCell(new SpreadsheetLocation(cellReferences[i]));
 			if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
 				return true;
