@@ -81,6 +81,7 @@ public class FormulaCell extends RealCell{
 	}
 	
 	public String abbreviatedCellText(){
+		circError = circRef(this,name);
 		if(circError || hasEvaluationError())
 			return "#ERROR    ";
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
@@ -166,7 +167,4 @@ public class FormulaCell extends RealCell{
 		return false;
 	}
 	
-	public void setCircError(boolean b){
-		circError = b;
-	}
 }
