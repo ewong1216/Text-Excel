@@ -3,10 +3,13 @@ package textExcel;
 public class FormulaCell extends RealCell{
 	private Spreadsheet s;
 	private String[] cellReferences;
+	private String name;
+	private boolean circError;
 	
-	public FormulaCell(String input,Spreadsheet s){
+	public FormulaCell(String input,Spreadsheet s,String name){
 		super(input);
 		this.s = s;
+		this.name = name;
 		String[] operands = input.substring(2,input.length()-2).split(" ");
 		if(operands[0].equalsIgnoreCase("sum") || operands[0].equalsIgnoreCase("avg"))
 			operands[0] = "";
@@ -19,8 +22,11 @@ public class FormulaCell extends RealCell{
 			}	
 		}
 		cellReferences = new String[count];
+		circError = false;
 		for(int i = 0; i < cellReferences.length; i++){
 			cellReferences[i] = operands[indexes[i]];
+			if(cellReferences[i].equals(name) || circRef(this,name))
+				circError = true;
 		}
 	}
 	public double getDoubleValue(){
@@ -75,7 +81,7 @@ public class FormulaCell extends RealCell{
 	}
 	
 	public String abbreviatedCellText(){
-		if(hasError())
+		if(circError || hasEvaluationError())
 			return "#ERROR    ";
 		return Spreadsheet.fillSpaces(getDoubleValue()+"");
 	}
@@ -107,15 +113,24 @@ public class FormulaCell extends RealCell{
 		}
 		return d;
 	}
-
-	private boolean hasError(){
+	
+	private boolean hasEvaluationError(){
 		for(int i = 0; i < cellReferences.length; i++){
+			//TODO: Circular Reference Errors
 			Cell c = s.getCell(new SpreadsheetLocation(cellReferences[i]));
 			if(c.getClass() == EmptyCell.class || c.getClass() == TextCell.class)
 				return true;
-			if(c.abbreviatedCellText().contains("#ERROR"))
+			if(c.getClass() == ValueCell.class || c.getClass() == PercentCell.class)
+				return false;
+			if(!((FormulaCell) c).name.equals(name) && c.abbreviatedCellText().contains("#ERROR"))
 				return true;
-			//TODO: Circular Reference Errors
+			if(name.equals(cellReferences[i]))
+				return true;
+			if(c.getClass() == FormulaCell.class){
+				FormulaCell f = (FormulaCell) c;
+				if(circRef(f,name))
+					return true;
+			}
 		}
 		if(super.getInput().contains(" / 0"))
 			return true;
@@ -139,5 +154,19 @@ public class FormulaCell extends RealCell{
 			return true;
 		return false;
 	}
-
+	
+	private boolean circRef(FormulaCell f,String namesAbove){
+		for(int i = 0; i < f.cellReferences.length; i++){
+			if(namesAbove.contains(f.cellReferences[i]))
+				return true;
+			Cell c = s.getCell(new SpreadsheetLocation(f.cellReferences[i]));
+			if(c.getClass() == FormulaCell.class)
+				return circRef((FormulaCell) c,namesAbove+((FormulaCell) c).name);
+		}
+		return false;
+	}
+	
+	public void setCircError(boolean b){
+		circError = b;
+	}
 }

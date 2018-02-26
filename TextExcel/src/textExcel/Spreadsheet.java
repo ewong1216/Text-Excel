@@ -1,5 +1,4 @@
 package textExcel;
-
 import java.util.Arrays;
 
 public class Spreadsheet implements Grid{
@@ -30,16 +29,15 @@ public class Spreadsheet implements Grid{
 		String[] com = c.split(" ",3);
 		if(com[0].equalsIgnoreCase("clear"))
 			clearCell(new SpreadsheetLocation(com[1]));
-		else if(com.length == 1){
+		else if(com.length == 1)
 			return getCell(new SpreadsheetLocation(c)).fullCellText();
-		}
 		if(com[1].equals("=")){
 			if(com[2].contains("\""))
 				setTextCell(new SpreadsheetLocation(com[0]),com[2].substring(1, com[2].length()-1));
 			else if(com[2].contains("%"))
 				setPercentCell(new SpreadsheetLocation(com[0]),com[2]);
 			else if(com[2].contains("("))
-				setFormulaCell(new SpreadsheetLocation(com[0]),com[2],this);
+				setFormulaCell(new SpreadsheetLocation(com[0]),com[2],this,com[0]);
 			else
 				setValueCell(new SpreadsheetLocation(com[0]),com[2]);
 		}
@@ -152,8 +150,8 @@ public class Spreadsheet implements Grid{
 	private void setValueCell(SpreadsheetLocation sl, String s){
 		cells[sl.getRow()][sl.getCol()] = new ValueCell(s);
 	}
-	private void setFormulaCell(SpreadsheetLocation sl, String s, Spreadsheet sp){
-		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s,sp);
+	private void setFormulaCell(SpreadsheetLocation sl, String s, Spreadsheet sp,String name){
+		cells[sl.getRow()][sl.getCol()] = new FormulaCell(s,sp,name);
 	}
 	public Cell getCell(Location loc){
 		return cells[loc.getRow()][loc.getCol()];
