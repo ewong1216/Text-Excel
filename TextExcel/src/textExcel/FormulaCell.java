@@ -6,10 +6,10 @@ public class FormulaCell extends RealCell{
 	private String name;
 	private boolean circError;
 	
-	public FormulaCell(String input,Spreadsheet s,String name){
+	public FormulaCell(String input,Spreadsheet s,String n){
 		super(input);
 		this.s = s;
-		this.name = name;
+		this.name = n.toUpperCase();
 		String[] operands = input.substring(2,input.length()-2).split(" ");
 		if(operands[0].equalsIgnoreCase("sum") || operands[0].equalsIgnoreCase("avg"))
 			operands[0] = "";
@@ -24,8 +24,8 @@ public class FormulaCell extends RealCell{
 		cellReferences = new String[count];
 		circError = false;
 		for(int i = 0; i < cellReferences.length; i++){
-			cellReferences[i] = operands[indexes[i]];
-			if(cellReferences[i].equals(name) || circRef(this,name))
+			cellReferences[i] = operands[indexes[i]].toUpperCase();
+			if(cellReferences[i].equals(n) || circRef(this,n))
 				circError = true;
 		}
 	}
